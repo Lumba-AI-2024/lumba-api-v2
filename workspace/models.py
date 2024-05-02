@@ -11,3 +11,6 @@ class Workspace(models.Model):
     description = models.CharField(max_length=200, default="default")
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name

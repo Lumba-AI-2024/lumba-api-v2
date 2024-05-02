@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'workspace',
+    'dataset'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Uploaded file directory
+# TODO: use s3/minio
+
+MEDIA_URL = '/directory/'
+MEDIA_ROOT = BASE_DIR / 'directory'
+

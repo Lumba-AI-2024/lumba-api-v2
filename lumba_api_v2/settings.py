@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'workspace',
 ]
 
 MIDDLEWARE = [
@@ -81,6 +84,16 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'lumba_ai_new',
+        'USER': 'postgres',
+        'PASSWORD': 'aSTIoneiRDiR',
+        'HOST': '34.101.228.98',  # Set to the database host, e.g., 'localhost' or '127.0.0.1'
+        'PORT': '5432',  # Set to the database port, default is '5432' for PostgreSQL
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

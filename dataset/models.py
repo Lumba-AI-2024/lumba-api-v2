@@ -14,8 +14,8 @@ class Dataset(models.Model):
     username = models.CharField(max_length=100, default='default')
     workspace = models.ForeignKey(Workspace, related_name='datasets', on_delete=models.CASCADE)
     # TODO: implement these
-    # numeric = models.TextField(blank=True)
-    # non_numeric = models.TextField(blank=True)
+    numeric = models.TextField(blank=True)
+    non_numeric = models.TextField(blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 

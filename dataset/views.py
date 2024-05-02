@@ -49,9 +49,9 @@ class DatasetDetail(APIView):
                 non_numeric_type.append(k)
         numeric = ''
         non_numeric = ''
-        if not len(numeric_type) == 0:
+        if len(numeric_type) != 0:
             numeric = ','.join(numeric_type)
-        if not len(non_numeric_type) == 0:
+        if len(non_numeric_type) != 0:
             non_numeric = ','.join(non_numeric_type)
 
         serializer = DatasetSerializer(data={

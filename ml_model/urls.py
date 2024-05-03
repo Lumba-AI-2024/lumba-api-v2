@@ -1,10 +1,11 @@
 from django.urls import path
-from .views import MLModelListView, MLModelDetailView
+from .views import MLModelListView, MLModelDetailView, model_do_predict
 
 urlpatterns = [
     # DONE
     path('list/', MLModelListView.as_view()),
     path('', MLModelDetailView.as_view()),
+    path('predict/', model_do_predict),
     # -------------------------------
 
     # path('initiate/', initiate_modeling),
@@ -16,6 +17,5 @@ urlpatterns = [
     # path('getrecord/', get_training_record),
 
 
-    # path('columns/', get_columns_type_by_modeling_method),
-    # path('predict/', model_do_predict),
+
 ]

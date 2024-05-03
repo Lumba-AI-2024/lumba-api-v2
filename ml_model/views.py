@@ -1,3 +1,5 @@
+import joblib as joblib
+import numpy as np
 from django.http import Http404
 from django.shortcuts import render
 from rest_framework import status
@@ -31,14 +33,16 @@ class MLModelListView(APIView):
         return Response(serializer.data)
 
 
+def get_model(modelname, workspace, username):
+    try:
+        _workspace = Workspace.objects.get(name=workspace, username=username)
+        dataset = Dataset.objects.get(workspace=_workspace)
+        return MLModel.objects.get(dataset=dataset)
+    except (Workspace.DoesNotExist, MLModel.DoesNotExist):
+        raise Http404
+
+
 class MLModelDetailView(APIView):
-    def get_model(self, modelname, workspace, username):
-        try:
-            _workspace = Workspace.objects.get(name=workspace, username=username)
-            dataset = Dataset.objects.get(workspace=_workspace)
-            return MLModel.objects.get(dataset=dataset)
-        except (Workspace.DoesNotExist, MLModel.DoesNotExist):
-            raise Http404
 
     def get(self, request):
         """
@@ -46,7 +50,7 @@ class MLModelDetailView(APIView):
         :param request:
         :return:
         """
-        model = self.get_model(
+        model = get_model(
             request.query_params['modelname'],
             request.query_params['workspace'],
             request.query_params['username']
@@ -60,7 +64,7 @@ class MLModelDetailView(APIView):
         :param request: params: modelname, workspace, username; data: status
         :return:
         """
-        model = self.get_model(
+        model = get_model(
             request.query_params['modelname'],
             request.query_params['workspace'],
             request.query_params['username']
@@ -98,7 +102,23 @@ class MLModelDetailView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view()
+def model_do_predict(request):
+    """
+    Not touching this because I don't understand what this does.
+    :param request:
+    :return:
+    """
+    try:
+        model_name = request.query_params['modelname']
+        feature = int(request.query_params['feature'])
+        username = request.query_params['username']
+        workspace = request.query_params['workspace']
+    except:
+        return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def get_columns(request):
-    pass
+    modelfile = get_model(model_name, workspace, username)
+    model = joblib.load(modelfile.model_file.file)
+    predict = model.predict(np.array([feature]).reshape(-1, 1))
+
+    return Response({'result': predict[0][0]}, status=status.HTTP_200_OK)

@@ -22,14 +22,13 @@ class DatasetList(APIView):
             workspace=workspace
         )
         serializer = DatasetSerializer(datasets, many=True)
-        print(serializer)
         return Response(serializer.data)
 
 
 class DatasetDetail(APIView):
     def get_dataset(self, filename, workspace, username):
         try:
-            _workspace = Workspace.objects.get(name=workspace)
+            _workspace = Workspace.objects.get(name=workspace, username=username)
             return Dataset.objects.get(name=filename, workspace=_workspace, username=username)
         except Dataset.DoesNotExist:
             raise Http404
@@ -39,21 +38,7 @@ class DatasetDetail(APIView):
         # This SHOULD be a method in DataScience class
         df = pandas.read_csv(request.data['file'].file)
         ds = DataScience(dataframe=df)
-        columns_type = ds.get_all_column_type()
-        numeric_type = []
-        non_numeric_type = []
-        for k, v in columns_type.items():
-            if v in ['Numerical']:
-                numeric_type.append(k)
-            else:
-                non_numeric_type.append(k)
-        numeric = ''
-        non_numeric = ''
-        if len(numeric_type) != 0:
-            numeric = ','.join(numeric_type)
-        if len(non_numeric_type) != 0:
-            non_numeric = ','.join(non_numeric_type)
-
+        numeric, non_numeric = ds.get_numeric_and_non_numeric_columns()
         serializer = DatasetSerializer(data={
             **request.data.dict(),
             'size': round(request.data['file'].size / (1024 * 1024), 2),
@@ -77,16 +62,9 @@ class DatasetDetail(APIView):
 
         dataframe = pandas.read_csv(self.get_dataset(filename=file_name, username=username, workspace=workspace).file)
 
-        # set pagination
-        max_row = dataframe.shape[0]
-        page = int(request.query_params['page'])
-        rowsperpage = int(request.query_params['rowsperpage'])
-        first_row = (page - 1) * rowsperpage
-        last_row = first_row + rowsperpage
-        if last_row > max_row:
-            last_row = max_row
+        ds = DataScience(dataframe)
 
-        return Response(json.loads(dataframe.iloc[first_row:last_row].to_json()), status=status.HTTP_200_OK)
+        return Response(ds.get_preview(int(request.query_params['page']), int(request.query_params['rowsperpage'])), status=status.HTTP_200_OK)
 
     def put(self, request):
         dataset = self.get_dataset(request.query_params['oldfilename'], request.query_params['workspace'], request.query_params['username'])

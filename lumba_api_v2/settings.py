@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'workspace',
-    'dataset'
+    'dataset',
+    'ml_model'
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/directory/'
 MEDIA_ROOT = BASE_DIR / 'directory'
 
+# External URLs
+TRAINING_API_URL = 'http://127.0.0.1:7000/train/'

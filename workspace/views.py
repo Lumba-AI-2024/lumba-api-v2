@@ -53,6 +53,3 @@ class WorkspaceDetail(APIView):
         workspace = self.get_workspace(request.data['name'])
         workspace.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-

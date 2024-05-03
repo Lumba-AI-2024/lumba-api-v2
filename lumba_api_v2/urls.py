@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('workspace/', include('workspace.urls')),
     path('file/', include('dataset.urls')),
+    path('modeling/', include('ml_model.urls')),
 ]

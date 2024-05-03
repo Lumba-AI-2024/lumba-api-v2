@@ -14,3 +14,7 @@ class Workspace(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    @property
+    def full_path(self):
+        return f"{self.username}/{self.name}"

@@ -9,7 +9,7 @@ def _upload_location(instance, filename):
 
 # Create your models here.
 class MLModel(models.Model):
-    name = models.CharField(max_length=100, default='', unique=True)
+    name = models.CharField(max_length=100, default='')
     model_file = models.FileField(upload_to=_upload_location, blank=True)
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
     method = models.CharField(max_length=100, default="-")  # TODO: change to enums
@@ -21,4 +21,7 @@ class MLModel(models.Model):
     status = models.CharField(max_length=100, default="accepted")  # TODO: change to enums
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('dataset', 'name',)
 

@@ -34,7 +34,7 @@ class WorkspaceDetail(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        data = request.data.dict()
+        data = request.data
         serializer = WorkspaceSerializer(data=data)
         if serializer.is_valid():
             serializer.save()

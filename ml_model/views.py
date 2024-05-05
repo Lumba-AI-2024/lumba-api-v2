@@ -1,7 +1,7 @@
 import joblib as joblib
 import numpy as np
 from django.http import Http404
-from django.shortcuts import render
+import requests
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -33,11 +33,11 @@ class MLModelListView(APIView):
         return Response(serializer.data)
 
 
-def get_model(modelname, workspace, username):
+def get_model(modelname, datasetname, workspace, username):
     try:
         _workspace = Workspace.objects.get(name=workspace, username=username)
-        dataset = Dataset.objects.get(workspace=_workspace)
-        return MLModel.objects.get(dataset=dataset)
+        dataset = Dataset.objects.get(workspace=_workspace, username=username, name=datasetname)
+        return MLModel.objects.get(dataset=dataset, name=modelname)
     except (Workspace.DoesNotExist, MLModel.DoesNotExist):
         raise Http404
 
@@ -52,6 +52,7 @@ class MLModelDetailView(APIView):
         """
         model = get_model(
             request.query_params['modelname'],
+            request.query_params['datasetname'],
             request.query_params['workspace'],
             request.query_params['username']
         )
@@ -66,6 +67,7 @@ class MLModelDetailView(APIView):
         """
         model = get_model(
             request.query_params['modelname'],
+            request.query_params['datasetname'],
             request.query_params['workspace'],
             request.query_params['username']
         )
@@ -87,19 +89,28 @@ class MLModelDetailView(APIView):
         target:affairs
         :return:
         """
+        print(request.data.dict())
         workspace = Workspace.objects.get(username=request.data['username'], name=request.data['workspace'])
-        dataset = Dataset.objects.get(name=request.data['filename'], workspace=workspace)
-
-        serializer = MLModelSerializer(data={**request.data.dict(), 'dataset': dataset.pk, 'name':request.data['modelname']})
+        dataset = Dataset.objects.get(name=request.data['filename'], workspace=workspace, username=request.data['username'])
+        payload = {**request.data.dict(), 'dataset': dataset.pk, 'name':request.data['modelname']}
+        serializer = MLModelSerializer(data=payload)
         if serializer.is_valid():
             serializer.save()
-            try:
-                # TODO: Commence training. Add implementation to the /train endpoint
-                pass
-            except:
-                pass
+            # TODO: Commence training. Add implementation to the /train endpoint
+            requests.post(training_service_url, data={**payload, 'file': dataset.file})
+            print("Model trained!")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request):
+        model = get_model(
+            modelname=request.data['modelname'],
+            datasetname=request.data['datasetname'],
+            workspace=request.data['workspace'],
+            username=request.data['username']
+        )
+        model.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view()

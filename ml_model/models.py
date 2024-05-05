@@ -4,7 +4,7 @@ from dataset.models import Dataset
 
 
 def _upload_location(instance, filename):
-    return f'{instance.username}/{instance.workspace.name}/{filename}'
+    return f'{instance.dataset.workspace.username}/{instance.dataset.workspace.name}/{filename}'
 
 
 # Create your models here.

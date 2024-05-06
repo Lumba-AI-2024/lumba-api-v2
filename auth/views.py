@@ -54,4 +54,5 @@ class LogoutAllView(APIView):
 
 class GetUserView(APIView):
     def get(self, request):
-        return Response(self.request.user, status=status.HTTP_200_OK)
+        return Response(User.objects.get(username=request.query_params('username')), status=status.HTTP_200_OK)
+

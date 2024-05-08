@@ -24,5 +24,5 @@ urlpatterns = [
     path('modeling/', include('ml_model.urls')),
     path('preprocess/', include('data_cleaning_endpoint.urls')),
     path('profiling/', include('profiling.urls')),
-    path('authentication/', include('auth.urls'))
+    path('authentication/', include('authentication.urls')),
 ]

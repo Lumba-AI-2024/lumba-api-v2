@@ -14,26 +14,20 @@ import os
 
 from dataset.models import Dataset
 from dataset.serializers import DatasetSerializer
+from dataset.views import get_dataset
 from workspace.models import Workspace
 
 
-def get_dataset(filename, workspace, username):
-    try:
-        _workspace = Workspace.objects.get(name=workspace, username=username)
-        return Dataset.objects.get(name=filename, workspace=_workspace, username=username)
-    except Dataset.DoesNotExist:
-        raise Http404
+
 
 @api_view()
 def null_check(request):
-    try:
-        file_name = request.query_params['filename']
-        username = request.query_params['username']
-        workspace = request.query_params['workspace']
-    except:
-        return Response({'message': "input error"},status=status.HTTP_400_BAD_REQUEST)
-
-    dataset = get_dataset(filename=file_name, workspace=workspace, username=username)
+    dataset = get_dataset(
+        filename=request.query_params['filename'],
+        workspace=request.query_params['workspace'],
+        username=request.query_params['username'],
+        workspace_type=request.query_params['type']
+    )
     dataframe = pd.read_csv(dataset.file)
     preproceess = Preprocess(dataframe=dataframe)
     result = preproceess.data_null_check()
@@ -41,14 +35,12 @@ def null_check(request):
 
 @api_view()
 def duplication_check(request):
-    try:
-        file_name = request.query_params['filename']
-        username = request.query_params['username']
-        workspace = request.query_params['workspace']
-    except:
-        return Response({'message': "input error"},status=status.HTTP_400_BAD_REQUEST)
-
-    dataset = get_dataset(filename=file_name, workspace=workspace, username=username)
+    dataset = get_dataset(
+        filename=request.query_params['filename'],
+        workspace=request.query_params['workspace'],
+        username=request.query_params['username'],
+        workspace_type=request.query_params['type']
+    )
     dataframe = pd.read_csv(dataset.file)
     preproceess = Preprocess(dataframe=dataframe)
     result = preproceess.data_duplication_check()
@@ -56,14 +48,12 @@ def duplication_check(request):
 
 @api_view()
 def outlier_check(request):
-    try:
-        file_name = request.query_params['filename']
-        username = request.query_params['username']
-        workspace = request.query_params['workspace']
-    except:
-        return Response({'message': "input error"},status=status.HTTP_400_BAD_REQUEST)
-
-    dataset = get_dataset(filename=file_name, workspace=workspace, username=username)
+    dataset = get_dataset(
+        filename=request.query_params['filename'],
+        workspace=request.query_params['workspace'],
+        username=request.query_params['username'],
+        workspace_type=request.query_params['type']
+    )
     dataframe = pd.read_csv(dataset.file)
     preproceess = Preprocess(dataframe=dataframe)
     result = preproceess.data_outlier_check()
@@ -71,14 +61,12 @@ def outlier_check(request):
 
 @api_view()
 def get_boxplot(request):
-    try:
-        file_name = request.query_params['filename']
-        username = request.query_params['username']
-        workspace = request.query_params['workspace']
-    except:
-        return Response({'message': "input error"},status=status.HTTP_400_BAD_REQUEST)
-
-    dataset = get_dataset(filename=file_name, workspace=workspace, username=username)
+    dataset = get_dataset(
+        filename=request.query_params['filename'],
+        workspace=request.query_params['workspace'],
+        username=request.query_params['username'],
+        workspace_type=request.query_params['type']
+    )
     dataframe = pd.read_csv(dataset.file)
     analysis = Analysis(dataframe=dataframe)
     result = json.loads(analysis.get_box_plot_data())
@@ -91,10 +79,16 @@ def cleaning_handler(request):
         file_name = request.query_params['filename']
         username = request.query_params['username']
         workspace = request.query_params['workspace']
+        workspace_type = request.query_params['type']
     except:
         return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
 
-    dataset = get_dataset(filename=file_name, workspace=workspace, username=username)
+    dataset = get_dataset(
+        filename=request.query_params['filename'],
+        workspace=request.query_params['workspace'],
+        username=request.query_params['username'],
+        workspace_type=request.query_params['type']
+    )
     dataframe = pd.read_csv(dataset.file)
     preprocess = Preprocess(dataframe=dataframe)
 
@@ -144,8 +138,8 @@ def cleaning_handler(request):
 
 
 def generate_file_name(file_name):
-    file, ext = os.path.splitext(file_name)
-    new_file_name = file + "_" + random_string() + ext
+    _file, ext = os.path.splitext(file_name)
+    new_file_name = _file + "_" + random_string() + ext
     return new_file_name
 
 

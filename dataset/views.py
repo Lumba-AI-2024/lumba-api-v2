@@ -25,13 +25,15 @@ class DatasetList(APIView):
         return Response(serializer.data)
 
 
+def get_dataset(filename, workspace_type, workspace, username):
+    try:
+        _workspace = Workspace.objects.get(name=workspace, username=username, type=workspace_type)
+        return Dataset.objects.get(name=filename, workspace=_workspace, username=username)
+    except Dataset.DoesNotExist:
+        raise Http404
+
+
 class DatasetDetail(APIView):
-    def get_dataset(self, filename, workspace, workspace_type, username):
-        try:
-            _workspace = Workspace.objects.get(name=workspace, username=username, type=workspace_type)
-            return Dataset.objects.get(name=filename, workspace=_workspace, username=username)
-        except Dataset.DoesNotExist:
-            raise Http404
 
     def post(self, request):
         df = pandas.read_csv(request.data['file'].file)
@@ -61,14 +63,21 @@ class DatasetDetail(APIView):
         except:
             return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
 
-        dataframe = pandas.read_csv(self.get_dataset(filename=file_name, username=username, workspace=workspace, workspace_type=workspace_type).file)
+        dataframe = pandas.read_csv(
+            get_dataset(filename=file_name, username=username, workspace=workspace, workspace_type=workspace_type).file)
 
         ds = DataScience(dataframe)
 
-        return Response(ds.get_preview(int(request.query_params['page']), int(request.query_params['rowsperpage'])), status=status.HTTP_200_OK)
+        return Response(ds.get_preview(int(request.query_params['page']), int(request.query_params['rowsperpage'])),
+                        status=status.HTTP_200_OK)
 
     def put(self, request):
-        dataset = self.get_dataset(request.query_params['oldfilename'], request.query_params['workspace'], request.query_params['type'], request.query_params['username'])
+        dataset = get_dataset(
+            filename=request.query_params['filename'],
+            workspace_type=request.query_params['type'],
+            workspace=request.query_params['workspace'],
+            username=request.query_params['username']
+        )
 
         serializer = DatasetSerializer(dataset, {'name': request.data['newfilename']}, partial=True)
 
@@ -78,6 +87,11 @@ class DatasetDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        dataset = self.get_dataset(request.data['filename'], request.data['workspace'], request.data['type'], request.data['username'])
+        dataset = get_dataset(
+            filename=request.data['filename'],
+            workspace_type=request.data['type'],
+            workspace=request.data['workspace'],
+            username=request.data['username']
+        )
         dataset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

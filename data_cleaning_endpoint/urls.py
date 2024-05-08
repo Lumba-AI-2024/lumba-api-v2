@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .checking_views import null_check, duplication_check, outlier_check, cleaning_handler, get_boxplot
+from .views import null_check, duplication_check, outlier_check, cleaning_handler, get_boxplot
 
 urlpatterns = [
     path('null/', null_check),

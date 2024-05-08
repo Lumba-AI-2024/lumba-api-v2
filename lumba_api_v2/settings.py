@@ -38,11 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'drf_yasg',
+    'knox',
+    'django_rest_passwordreset',
 
-    'rest_framework',
-    'workspace',
+    # project apps
     'dataset',
+    'workspace',
     'ml_model',
+    'profiling',
+    'authentication',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -120,6 +125,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Default user
+AUTH_USER_MODEL = 'authentication.UserProfile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

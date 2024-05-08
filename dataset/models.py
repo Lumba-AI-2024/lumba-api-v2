@@ -8,7 +8,7 @@ def _upload_location(instance, filename):
 
 # Create your models here.
 class Dataset(models.Model):
-    file = models.FileField(unique=True, upload_to=_upload_location)
+    file = models.FileField(upload_to=_upload_location)
     name = models.CharField(max_length=100, blank=False, null=False, default='default.csv')
     size = models.FloatField(default=0)
     username = models.CharField(max_length=100, default='default')

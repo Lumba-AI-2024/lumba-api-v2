@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from .serializers import RegisterSerializer, ChangePasswordSerializer, UpdateUserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import generics
@@ -16,14 +18,12 @@ class RegisterView(generics.CreateAPIView):
 
 
 class ChangePasswordView(generics.UpdateAPIView):
-
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
 
 
 class UpdateProfileView(generics.UpdateAPIView):
-
     queryset = User.objects.all()
     permission_classes = (IsAuthenticated,)
     serializer_class = UpdateUserSerializer
@@ -52,3 +52,13 @@ class LogoutAllView(APIView):
             t, _ = BlacklistedToken.objects.get_or_create(token=token)
 
         return Response(status=status.HTTP_205_RESET_CONTENT)
+
+
+class GetUserView(APIView):
+    def get(self, request):
+        try:
+            user = User.objects.get(username=request.query_params['username'])
+            return Response({'username': user.username, 'email': user.email}, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            raise Http404
+

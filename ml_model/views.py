@@ -91,13 +91,14 @@ class MLModelDetailView(APIView):
         """
         print(request.data.dict())
         workspace = Workspace.objects.get(username=request.data['username'], name=request.data['workspace'])
-        dataset = Dataset.objects.get(name=request.data['filename'], workspace=workspace, username=request.data['username'])
+        dataset = Dataset.objects.get(name=request.data['datasetname'], workspace=workspace, username=request.data['username'])
         payload = {**request.data.dict(), 'dataset': dataset.pk, 'name':request.data['modelname']}
         serializer = MLModelSerializer(data=payload)
         if serializer.is_valid():
             serializer.save()
+            print(payload)
             # TODO: Commence training. Add implementation to the /train endpoint
-            requests.post(training_service_url, data={**payload, 'file': dataset.file})
+            requests.post(training_service_url, data={**payload}, files={'file': dataset.file})
             print("Model trained!")
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

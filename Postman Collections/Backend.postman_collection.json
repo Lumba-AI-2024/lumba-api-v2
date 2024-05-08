@@ -520,7 +520,7 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "name",
+									"key": "modelname",
 									"value": "affairs",
 									"type": "text"
 								},
@@ -590,7 +590,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/modeling/?modelname=affairs.csv&workspace={{workspace_name}}&username={{username}}",
+							"raw": "{{base_url}}/modeling/?datasetname=affairs.csv&workspace={{workspace_name}}&username={{username}}&modelname=affairs",
 							"host": [
 								"{{base_url}}"
 							],
@@ -600,7 +600,7 @@
 							],
 							"query": [
 								{
-									"key": "modelname",
+									"key": "datasetname",
 									"value": "affairs.csv"
 								},
 								{
@@ -610,6 +610,10 @@
 								{
 									"key": "username",
 									"value": "{{username}}"
+								},
+								{
+									"key": "modelname",
+									"value": "affairs"
 								}
 							]
 						}
@@ -622,14 +626,24 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/modeling/listmodel/",
+							"raw": "{{base_url}}/modeling/list/?workspace={{workspace_name}}&username={{username}}",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"modeling",
-								"listmodel",
+								"list",
 								""
+							],
+							"query": [
+								{
+									"key": "workspace",
+									"value": "{{workspace_name}}"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}"
+								}
 							]
 						}
 					},
@@ -641,7 +655,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/modeling/?modelname=affairs.csv&workspace={{workspace_name}}&username={{username}}",
+							"raw": "{{base_url}}/modeling/?datasetname=affairs.csv&workspace={{workspace_name}}&username={{username}}&modelname=affairs",
 							"host": [
 								"{{base_url}}"
 							],
@@ -651,7 +665,7 @@
 							],
 							"query": [
 								{
-									"key": "modelname",
+									"key": "datasetname",
 									"value": "affairs.csv"
 								},
 								{
@@ -661,7 +675,49 @@
 								{
 									"key": "username",
 									"value": "{{username}}"
+								},
+								{
+									"key": "modelname",
+									"value": "affairs"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Model",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "modelname",
+									"value": "affairs.csv",
+									"type": "text"
+								},
+								{
+									"key": "workspace",
+									"value": "{{workspace_name}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/modeling/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modeling",
+								""
 							]
 						}
 					},
@@ -882,11 +938,11 @@
 		},
 		{
 			"key": "workspace_name",
-			"value": "ws1"
+			"value": "ws10"
 		},
 		{
 			"key": "username",
-			"value": "gbhisma"
+			"value": "hera"
 		},
 		{
 			"key": "filename",

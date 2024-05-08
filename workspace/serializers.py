@@ -7,4 +7,4 @@ class WorkspaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Workspace
-        fields = ('name', 'username', 'description', 'created_time', 'updated_time')
+        fields = ('name', 'username', 'description', 'type', 'created_time', 'updated_time')

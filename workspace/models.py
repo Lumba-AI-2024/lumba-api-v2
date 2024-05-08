@@ -18,7 +18,7 @@ class Workspace(models.Model):
 
     @property
     def full_path(self):
-        return f"{self.username}/{self.name}"
+        return f"{self.username}/{self.name}/{self.type}"
 
     class Meta:
-        unique_together = ('username', 'name',)
+        unique_together = ('username', 'name', 'type')

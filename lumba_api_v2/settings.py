@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'knox',
     'django_rest_passwordreset',
+    "storages",
 
     # project apps
     'dataset',
@@ -158,3 +159,21 @@ MEDIA_ROOT = BASE_DIR / 'directory'
 
 # External URLs
 TRAINING_API_URL = 'http://127.0.0.1:7000/train/'
+
+
+# Storage settings
+# Uses the s3 compatible Minio
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+        },
+    },
+}
+
+AWS_STORAGE_BUCKET_NAME = 'lumba-directory'
+
+AWS_ACCESS_KEY_ID = 'zl6ggTd5WUAaV2NMaGJj'
+AWS_SECRET_ACCESS_KEY = 'mtUHWqwV2GlpW8eALQ0quZEWCHkZqQlbBAXKuXus'
+AWS_S3_ENDPOINT_URL = 'http://34.101.59.56:9000'
+

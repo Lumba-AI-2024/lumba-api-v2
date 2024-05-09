@@ -16,9 +16,8 @@ from workspace.models import Workspace
 # Create your views here.
 class DatasetList(APIView):
     def get(self, request):
-        workspace = Workspace.objects.get(name=request.query_params['workspace'])
+        workspace = Workspace.objects.get(name=request.query_params['workspace'], username=request.query_params['username'])
         datasets = Dataset.objects.filter(
-            username=request.query_params['username'],
             workspace=workspace
         )
         serializer = DatasetSerializer(datasets, many=True)

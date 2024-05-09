@@ -103,7 +103,7 @@ DATABASES = {
         'NAME': 'lumba_ai_new',
         'USER': 'postgres',
         'PASSWORD': 'aSTIoneiRDiR',
-        'HOST': '34.101.228.98',  # Set to the database host, e.g., 'localhost' or '127.0.0.1'
+        'HOST': '34.101.59.56',  # Set to the database host, e.g., 'localhost' or '127.0.0.1'
         'PORT': '5432',  # Set to the database port, default is '5432' for PostgreSQL
     }
 }

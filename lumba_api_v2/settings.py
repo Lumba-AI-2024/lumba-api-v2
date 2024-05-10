@@ -167,11 +167,16 @@ STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
         "OPTIONS": {
+            'bucket_name':'lumba-directory',
         },
     },
+    'staticfiles': {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            'bucket_name':'lumba-static',
+        },
+    }
 }
-
-AWS_STORAGE_BUCKET_NAME = 'lumba-directory'
 
 AWS_ACCESS_KEY_ID = 'zl6ggTd5WUAaV2NMaGJj'
 AWS_SECRET_ACCESS_KEY = 'mtUHWqwV2GlpW8eALQ0quZEWCHkZqQlbBAXKuXus'

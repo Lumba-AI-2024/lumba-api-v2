@@ -11,7 +11,7 @@ def _upload_location(instance, filename):
 class MLModel(models.Model):
     name = models.CharField(max_length=100, default='')
     model_file = models.FileField(upload_to=_upload_location, blank=True)
-    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+    dataset = models.ForeignKey(Dataset, related_name='models', on_delete=models.CASCADE)
     method = models.CharField(max_length=100, default="-")  # TODO: change to enums
     algorithm = models.CharField(max_length=100, default="-")  # TODO: change to enums
     metrics = models.CharField(max_length=100, default="-")
@@ -25,3 +25,19 @@ class MLModel(models.Model):
     class Meta:
         unique_together = ('dataset', 'name',)
 
+    def initiate_training(self):
+        payload = {
+            'modelname': self.name,
+            'datasetname': self.dataset.name,
+            'workspace': self.dataset.workspace.name,
+            'type': self.dataset.workspace.type,
+            'username': self.dataset.username,
+            'dataset_link': self.dataset.full_path,
+            'method': self.method,
+            'algorithm': self.algorithm,
+            'metrics': self.metrics,
+            'feature': self.feature,
+            'target': self.target,
+        }
+
+        return payload

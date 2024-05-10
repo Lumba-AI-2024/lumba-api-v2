@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from ml_model.models import MLModel
-from workspace.models import Workspace
 
 class MLModelSerializer(serializers.ModelSerializer):
     class Meta:

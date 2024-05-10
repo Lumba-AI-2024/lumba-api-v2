@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from dataset.models import Dataset
+from dataset.serializers import DatasetSerializer
 from ml_model.models import MLModel
 from ml_model.serializers import MLModelSerializer
 from lumba_api_v2 import settings
@@ -71,6 +72,7 @@ class MLModelDetailView(APIView):
             request.query_params['workspace'],
             request.query_params['username']
         )
+        print(request.data)
         serializer = MLModelSerializer(model, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -91,16 +93,16 @@ class MLModelDetailView(APIView):
         """
         print(request.data.dict())
         workspace = Workspace.objects.get(username=request.data['username'], name=request.data['workspace'])
-        dataset = Dataset.objects.get(name=request.data['datasetname'], workspace=workspace, username=request.data['username'])
-        payload = {**request.data.dict(), 'dataset': dataset.pk, 'name':request.data['modelname']}
+        dataset = Dataset.objects.get(name=request.data['filename'], workspace=workspace, username=request.data['username'])
+        payload = {**request.data.dict(), 'dataset': dataset.pk, 'name': request.data['modelname']}
         serializer = MLModelSerializer(data=payload)
         if serializer.is_valid():
-            serializer.save()
-            print(payload)
+            model = serializer.save()
+            response = {**serializer.data, 'dataset': DatasetSerializer(dataset).data}
             # TODO: Commence training. Add implementation to the /train endpoint
-            requests.post(training_service_url, data={**payload}, files={'file': dataset.file})
+            requests.post(training_service_url, data=model.initiate_training())
             print("Model trained!")
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(model.initiate_training(), status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):

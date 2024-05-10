@@ -72,6 +72,18 @@ def get_boxplot(request):
     result = json.loads(analysis.get_box_plot_data())
     return Response(result,status=status.HTTP_200_OK)
 
+@api_view()
+def encode_check(request):
+    dataset = get_dataset(
+        filename=request.query_params['filename'],
+        workspace=request.query_params['workspace'],
+        username=request.query_params['username'],
+        workspace_type=request.query_params['type']
+    )
+    dataframe = pd.read_csv(dataset.file)
+    preproceess = Preprocess(dataframe=dataframe)
+    result = preproceess.data_encode_check()
+    return Response(result,status=status.HTTP_200_OK)
 
 @api_view()
 def cleaning_handler(request):

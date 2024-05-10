@@ -79,6 +79,16 @@ class Preprocess(DataScience):
         self.dataframe = df
 
         return df
+    
+    def data_encode_check(self) -> Dict[str, List[str]]:
+        df = self.dataframe.copy()
+        
+        categorical_columns = dict()
+        for col in df.columns:
+            if df[col].dtype == "object":
+                categorical_columns[col] = df[col].unique()
+        
+        return categorical_columns
 
     @staticmethod
     def _get_upper_lower_level(df_col: Series) -> Tuple[float, float]:

@@ -132,7 +132,7 @@ def cleaning_handler(request):
 
     # check and collect columns type
     numeric, non_numeric = preprocess.get_numeric_and_non_numeric_columns()
-    workspace_obj = Workspace.objects.get(name='bryan', username='adel', type='predicting')
+    workspace_obj = Workspace.objects.get(name=workspace, username=username, type=workspace_type)
     workspace_pk = workspace_obj.pk
 
     payload = {

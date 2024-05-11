@@ -50,6 +50,6 @@ class WorkspaceDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
-        workspace = self.get_workspace(request.query_params['name'], request.query_params['username'], request.query_params['type'])
+        workspace = self.get_workspace(request.data['name'], request.data['username'], request.data['type'])
         workspace.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

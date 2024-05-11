@@ -89,6 +89,15 @@ class Preprocess(DataScience):
                 categorical_columns[col] = df[col].unique()
         
         return categorical_columns
+    
+    def data_column_filter(self, columns: List[str]) -> DataFrame:
+        df = self.dataframe.copy()
+
+        df = df[columns]
+
+        self.dataframe = df
+
+        return df
 
     @staticmethod
     def _get_upper_lower_level(df_col: Series) -> Tuple[float, float]:

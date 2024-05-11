@@ -86,6 +86,20 @@ def encode_check(request):
     return Response(result,status=status.HTTP_200_OK)
 
 @api_view()
+def filter_data(request):
+    dataset = get_dataset(
+        filename=request.query_params['filename'],
+        workspace=request.query_params['workspace'],
+        username=request.query_params['username'],
+        workspace_type=request.query_params['type']
+    )
+    dataframe = pd.read_csv(dataset.file)
+    preproceess = Preprocess(dataframe=dataframe)
+    # tambah list as a parameter
+    result = preproceess.data_column_filter()
+    return Response(result,status=status.HTTP_200_OK)
+
+@api_view()
 def cleaning_handler(request):
     try:
         file_name = request.query_params['filename']

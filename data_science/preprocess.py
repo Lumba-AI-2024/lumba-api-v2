@@ -82,7 +82,7 @@ class Preprocess(DataScience):
     
     def data_encode_check(self) -> Dict[str, List[str]]:
         df = self.dataframe.copy()
-        
+        df.dropna(inplace=True)
         categorical_columns = dict()
         for col in df.columns:
             if df[col].dtype == "object":

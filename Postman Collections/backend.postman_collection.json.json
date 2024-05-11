@@ -804,7 +804,7 @@
 			"name": "Preprocess",
 			"item": [
 				{
-					"name": "Null Check Copy",
+					"name": "Null Check",
 					"id": "a4b0f582-2628-458a-a8f0-bebfc51fd9ef",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -813,7 +813,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/null?username={{username}}&workspace={{workspace_name}}&filename={{filename}}",
+							"raw": "{{base_url}}/preprocess/null?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -833,6 +833,11 @@
 								{
 									"key": "filename",
 									"value": "{{filename}}"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
 								}
 							]
 						}
@@ -840,7 +845,7 @@
 					"response": []
 				},
 				{
-					"name": "Master Handler Copy",
+					"name": "Master Handle",
 					"id": "acbd44e2-6629-4268-ac18-bf842642024e",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -849,7 +854,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace}}&filename={{filename}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1",
+							"raw": "http://{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1&type={{workspace_type}}",
 							"protocol": "http",
 							"host": [
 								"{{base_url}}"
@@ -865,7 +870,7 @@
 								},
 								{
 									"key": "workspace",
-									"value": "{{workspace}}"
+									"value": "{{workspace_name}}"
 								},
 								{
 									"key": "filename",
@@ -890,6 +895,11 @@
 								{
 									"key": "ordinal_encoding",
 									"value": "1"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
 								}
 							]
 						}
@@ -897,7 +907,7 @@
 					"response": []
 				},
 				{
-					"name": "Outlier Handler Copy",
+					"name": "Outlier Handler",
 					"id": "ab98320f-253f-4634-989c-9c2da92b8897",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -906,7 +916,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/outlier?username={{username}}&workspace={{workspace_name}}&filename={{filename}}",
+							"raw": "{{base_url}}/preprocess/outlier?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -926,6 +936,11 @@
 								{
 									"key": "filename",
 									"value": "{{filename}}"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
 								}
 							]
 						}
@@ -933,7 +948,7 @@
 					"response": []
 				},
 				{
-					"name": "BoxPlot Handler Copy",
+					"name": "BoxPlot Handler",
 					"id": "3e97e306-49ea-439c-b8e1-df73a5b0e7da",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -942,7 +957,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&filename={{filename}}",
+							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -962,6 +977,11 @@
 								{
 									"key": "filename",
 									"value": "{{filename}}"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
 								}
 							]
 						}

@@ -85,40 +85,40 @@ def encode_check(request):
     result = preproceess.data_encode_check()
     return Response(result,status=status.HTTP_200_OK)
 
-@api_view()
+@api_view(['GET', 'POST'])
 def cleaning_handler(request):
     try:
-        file_name = request.query_params['filename']
-        username = request.query_params['username']
-        workspace = request.query_params['workspace']
-        workspace_type = request.query_params['type']
+        file_name = request.data['filename']
+        username = request.data['username']
+        workspace = request.data['workspace']
+        workspace_type = request.data['type']
     except:
         return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
 
     dataset = get_dataset(
-        filename=request.query_params['filename'],
-        workspace=request.query_params['workspace'],
-        username=request.query_params['username'],
-        workspace_type=request.query_params['type']
+        filename=request.data['filename'],
+        workspace=request.data['workspace'],
+        username=request.data['username'],
+        workspace_type=request.data['type']
     )
     dataframe = pd.read_csv(dataset.file)
     preprocess = Preprocess(dataframe=dataframe)
-
-    if request.query_params['missing'] == '1':
-        if request.query_params['columns_missing'] != '':
-            col = request.query_params['columns_missing'].split(",")
+    
+    if request.data['missing'] == '1':
+        if request.data['columns_missing'] != '':
+            col = request.data['columns_missing'].split(",")
             preprocess.data_null_handler(col)
         else:
             preprocess.data_null_handler()
 
-    if request.query_params['duplication'] == '1':
-        if request.query_params['columns_duplication'] != '':
-            col = request.query_params['columns_duplication'].split(",")
+    if request.data['duplication'] == '1':
+        if request.data['columns_duplication'] != '':
+            col = request.data['columns_duplication'].split(",")
             preprocess.data_duplication_handler(col)
         else:
             preprocess.data_duplication_handler()
 
-    if request.query_params['outlier'] == '1':
+    if request.data['outlier'] == '1':
         preprocess.data_outlier_handler()
 
     # generate new file name
@@ -132,12 +132,15 @@ def cleaning_handler(request):
 
     # check and collect columns type
     numeric, non_numeric = preprocess.get_numeric_and_non_numeric_columns()
+    workspace_obj = Workspace.objects.get(name='bryan', username='adel', type='predicting')
+    workspace_pk = workspace_obj.pk
+
     payload = {
         'file': new_file,
         'name': new_file_name,
         'size': file_size,
         'username': username,
-        'workspace': workspace,
+        'workspace': workspace_pk,
         'numeric': numeric,
         'non_numeric': non_numeric,
     }

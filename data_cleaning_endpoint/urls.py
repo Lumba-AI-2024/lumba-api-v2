@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import null_check, duplication_check, outlier_check, cleaning_handler, get_boxplot, encode_check
+from .views import null_check, duplication_check, outlier_check, cleaning_handler, get_boxplot, encode_check, cleaning_automl
 
 urlpatterns = [
     path('null/', null_check),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('handle/', cleaning_handler),
     path('boxplot/', get_boxplot),
     path('categorical/', encode_check),
+    path('clean/', cleaning_automl),
 ]

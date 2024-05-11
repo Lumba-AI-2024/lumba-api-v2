@@ -165,12 +165,89 @@ def cleaning_handler(request):
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET', 'POST'])
+def cleaning_automl(request):
+    try:
+        file_name = request.data['filename']
+        username = request.data['username']
+        workspace = request.data['workspace']
+        workspace_type = request.data['type']
+    except:
+        return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
+
+    dataset = get_dataset(
+        filename=request.data['filename'],
+        workspace=request.data['workspace'],
+        username=request.data['username'],
+        workspace_type=request.data['type']
+    )
+    dataframe = pd.read_csv(dataset.file)
+    preprocess = Preprocess(dataframe=dataframe)
+    
+    # preprocess
+    preprocess.data_null_handler()
+    preprocess.data_duplication_handler()
+    
+    # handle ordinal encoding
+    if request.data['ordinal'] == '1':
+        if request.data['dict_ordinal_encoding'] != '':
+            result_dict = json.loads(request.data['dict_ordinal_encoding'])
+            preprocess.data_ordinal_encoding(result_dict)
+        else:
+            preprocess.data_ordinal_encoding()
+    
+    # handle encoding
+    # kolom = []
+    # if request.args.get('encoding') == '1':
+    #     if request.args.get('columns_encoding') != '':
+    #         col = request.args.get('columns_encoding').split(",")
+    #         kolom = col
+    #         preprocess.data_encoding(col)
+    #     else:
+    #         preprocess.data_encoding()
+    
+    preprocess.data_encoding()
+    
+        
+    new_file_name = generate_file_name_automl(file_name)
+    new_file_content = preprocess.dataframe.to_csv()
+    new_file = ContentFile(new_file_content.encode('utf-8'), name=new_file_name)
+    
+     # create new file model with serializer
+    file_size = round(new_file.size / (1024 * 1024), 2)
+
+    # check and collect columns type
+    numeric, non_numeric = preprocess.get_numeric_and_non_numeric_columns()
+    workspace_obj = Workspace.objects.get(name=workspace, username=username, type=workspace_type)
+    workspace_pk = workspace_obj.pk
+
+    payload = {
+        'file': new_file,
+        'name': new_file_name,
+        'size': file_size,
+        'username': username,
+        'workspace': workspace_pk,
+        'numeric': numeric,
+        'non_numeric': non_numeric,
+    }
+    serializer = DatasetSerializer(data=payload)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(preprocess.get_preview(1, 10), status=status.HTTP_200_OK)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
 
 def generate_file_name(file_name):
     _file, ext = os.path.splitext(file_name)
     new_file_name = _file + "_" + random_string() + ext
     return new_file_name
 
+def generate_file_name_automl(file_name):
+    _file, ext = os.path.splitext(file_name)
+    new_file_name = _file + "_preprocess" + ext
+    return new_file_name
 
 def random_string(length=4):
     return ''.join(random.choice(string.ascii_letters) for _ in range(length))

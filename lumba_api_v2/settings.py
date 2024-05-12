@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-8@t)qa$y#lrjwje&cj$@%rwzx1(9%fnm+h&p=r*w4!8i-l#6n!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,11 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'drf_yasg',
+    'knox',
+    'django_rest_passwordreset',
+    "storages",
 
-    'rest_framework',
+    # project apps
+    'dataset',
     'workspace',
-    'dataset'
+    'ml_model',
+    'profiling',
+    'authentication',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'lumba_api_v2.urls'
@@ -91,7 +103,7 @@ DATABASES = {
         'NAME': 'lumba_ai_new',
         'USER': 'postgres',
         'PASSWORD': 'aSTIoneiRDiR',
-        'HOST': '34.101.228.98',  # Set to the database host, e.g., 'localhost' or '127.0.0.1'
+        'HOST': '34.101.59.56',  # Set to the database host, e.g., 'localhost' or '127.0.0.1'
         'PORT': '5432',  # Set to the database port, default is '5432' for PostgreSQL
     }
 }
@@ -114,6 +126,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Default user
+AUTH_USER_MODEL = 'authentication.UserProfile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -142,4 +156,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/directory/'
 MEDIA_ROOT = BASE_DIR / 'directory'
+
+# External URLs
+TRAINING_API_URL = 'http://127.0.0.1:7000/train/'
+
+
+# Storage settings
+# Uses the s3 compatible Minio
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            'bucket_name':'lumba-directory',
+        },
+    },
+    'staticfiles': {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            'bucket_name':'lumba-static',
+        },
+    }
+}
+
+AWS_ACCESS_KEY_ID = 'zl6ggTd5WUAaV2NMaGJj'
+AWS_SECRET_ACCESS_KEY = 'mtUHWqwV2GlpW8eALQ0quZEWCHkZqQlbBAXKuXus'
+AWS_S3_ENDPOINT_URL = 'http://34.101.59.56:9000'
 

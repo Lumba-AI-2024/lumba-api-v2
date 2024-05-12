@@ -21,4 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('workspace/', include('workspace.urls')),
     path('file/', include('dataset.urls')),
+    path('modeling/', include('ml_model.urls')),
+    path('preprocess/', include('data_cleaning_endpoint.urls')),
+    path('profiling/', include('profiling.urls')),
+    path('authentication/', include('authentication.urls')),
 ]

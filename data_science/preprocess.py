@@ -4,6 +4,7 @@ from typing import Dict, List, Tuple
 from pandas.core.frame import DataFrame
 from pandas.core.series import Series
 from data_science.core import DataScience
+from sklearn.preprocessing import LabelEncoder
 
 class Preprocess(DataScience):
 
@@ -79,7 +80,48 @@ class Preprocess(DataScience):
         self.dataframe = df
 
         return df
+    
+    def data_encode_check(self) -> Dict[str, List[str]]:
+        df = self.dataframe.copy()
+        df.dropna(inplace=True)
+        categorical_columns = dict()
+        for col in df.columns:
+            if df[col].dtype == "object":
+                categorical_columns[col] = df[col].unique()
+        
+        return categorical_columns
+    
+    def data_column_filter(self, columns: List[str]) -> DataFrame:
+        df = self.dataframe.copy()
 
+        df = df[columns]
+
+        self.dataframe = df
+
+        return df
+    
+    def data_ordinal_encoding(self, mapping: Dict[str, Dict[str, int]]) -> DataFrame:
+        df = self.dataframe.copy()
+        columns = mapping.keys()
+        for col in columns:
+            df[col] = df[col].map(mapping[col])
+
+        self.dataframe = df
+
+        return df
+
+    def data_encoding(self) -> DataFrame:
+        df = self.dataframe.copy()
+
+        df = pd.get_dummies(df)
+        label = LabelEncoder()
+        for col in df.columns:
+            if len(df[col].unique()) >= 2:
+                df[col] = label.fit_transform(df[col])
+
+        self.dataframe = df
+
+        return df
     @staticmethod
     def _get_upper_lower_level(df_col: Series) -> Tuple[float, float]:
         """

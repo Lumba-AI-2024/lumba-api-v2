@@ -8,9 +8,17 @@ class Workspace(models.Model):
     """
     name = models.CharField(max_length=100, blank=False, null=False, unique=True)
     username = models.CharField(max_length=100, default="default")
+    type = models.CharField(max_length=100, default="predicting")
     description = models.CharField(max_length=200, default="default")
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         return self.name
+
+    @property
+    def full_path(self):
+        return f"{self.username}/{self.name}/{self.type}"
+
+    class Meta:
+        unique_together = ('username', 'name', 'type')

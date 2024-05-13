@@ -28,8 +28,15 @@ def null_check(request):
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
     )
+    if 'selected_columns' not in request.query_params:
+        dataframe = pd.read_csv(dataset.file)
+        preproceess = Preprocess(dataframe=dataframe)
+        result = preproceess.data_duplication_check()
+        return Response(result,status=status.HTTP_200_OK)
+    columns=request.query_params['selected_columns']
+    columns = columns.split(",")
     dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe)
+    preproceess = Preprocess(dataframe=dataframe, columns=columns)
     result = preproceess.data_null_check()
     return Response(result,status=status.HTTP_200_OK)
 
@@ -41,8 +48,15 @@ def duplication_check(request):
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
     )
+    if 'selected_columns' not in request.query_params:
+        dataframe = pd.read_csv(dataset.file)
+        preproceess = Preprocess(dataframe=dataframe)
+        result = preproceess.data_duplication_check()
+        return Response(result,status=status.HTTP_200_OK)
+    columns=request.query_params['selected_columns']
+    columns = columns.split(",")
     dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe)
+    preproceess = Preprocess(dataframe=dataframe, columns=columns)
     result = preproceess.data_duplication_check()
     return Response(result,status=status.HTTP_200_OK)
 
@@ -80,8 +94,15 @@ def encode_check(request):
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
     )
+    if 'selected_columns' not in request.query_params:
+        dataframe = pd.read_csv(dataset.file)
+        preproceess = Preprocess(dataframe=dataframe)
+        result = preproceess.data_duplication_check()
+        return Response(result,status=status.HTTP_200_OK)
+    columns=request.query_params['selected_columns']
+    columns = columns.split(",")
     dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe)
+    preproceess = Preprocess(dataframe=dataframe, columns=columns)
     result = preproceess.data_encode_check()
     return Response(result,status=status.HTTP_200_OK)
 
@@ -167,6 +188,7 @@ def cleaning_handler(request):
 
 @api_view(['GET', 'POST'])
 def cleaning_automl(request):
+    print(request.data)
     try:
         file_name = request.data['filename']
         username = request.data['username']
@@ -181,8 +203,10 @@ def cleaning_automl(request):
         username=request.data['username'],
         workspace_type=request.data['type']
     )
+    columns=request.data['selectedTrainingColumns']
+    columns = columns.split(",")
     dataframe = pd.read_csv(dataset.file)
-    preprocess = Preprocess(dataframe=dataframe)
+    preprocess = Preprocess(dataframe=dataframe, columns=columns)
     
     # preprocess
     preprocess.data_null_handler()

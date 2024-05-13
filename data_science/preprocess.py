@@ -8,17 +8,19 @@ from sklearn.preprocessing import LabelEncoder
 
 class Preprocess(DataScience):
 
-    def __init__(self, dataframe: DataFrame) -> None:
+    def __init__(self, dataframe: DataFrame, columns: list = None) -> None:
         super().__init__(dataframe)
+        self.columns = columns or []
+        # self.target = target
 
     def data_null_check(self) -> Dict[str, int]:
-        df = self.dataframe.copy()
+        df = self.dataframe[self.columns].copy()
         total_null_for_each_column = dict(df.isnull().sum())
 
         return total_null_for_each_column
 
     def data_null_handler(self, columns: List[str]=None) -> DataFrame:
-        df = self.dataframe.copy()
+        df = self.dataframe[self.columns].copy()
 
         if columns != None:
             df.dropna(subset=columns, inplace=True)
@@ -30,13 +32,13 @@ class Preprocess(DataScience):
         return df
 
     def data_duplication_check(self) -> int:
-        df = self.dataframe.copy()
+        df = self.dataframe[self.columns].copy()
         total_duplicate = df.duplicated().sum()
 
         return total_duplicate
 
     def data_duplication_handler(self, columns: List[str]=None) -> DataFrame:
-        df = self.dataframe.copy()
+        df = self.dataframe[self.columns].copy()
 
         if columns != None:
             df.drop_duplicates(subset=columns, inplace=True)
@@ -82,7 +84,7 @@ class Preprocess(DataScience):
         return df
     
     def data_encode_check(self) -> Dict[str, List[str]]:
-        df = self.dataframe.copy()
+        df = self.dataframe[self.columns].copy()
         df.dropna(inplace=True)
         categorical_columns = dict()
         for col in df.columns:
@@ -101,7 +103,7 @@ class Preprocess(DataScience):
         return df
     
     def data_ordinal_encoding(self, mapping: Dict[str, Dict[str, int]]) -> DataFrame:
-        df = self.dataframe.copy()
+        df = self.dataframe[self.columns].copy()
         columns = mapping.keys()
         for col in columns:
             df[col] = df[col].map(mapping[col])
@@ -111,7 +113,7 @@ class Preprocess(DataScience):
         return df
 
     def data_encoding(self) -> DataFrame:
-        df = self.dataframe.copy()
+        df = self.dataframe[self.columns].copy()
 
         df = pd.get_dummies(df)
         label = LabelEncoder()

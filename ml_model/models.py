@@ -1,6 +1,9 @@
+import requests
 from django.db import models
 
+from automl.models import AutoML
 from dataset.models import Dataset
+from lumba_api_v2 import settings
 
 
 def _upload_location(instance, filename):
@@ -8,6 +11,9 @@ def _upload_location(instance, filename):
 
 
 # Create your models here.
+# format nama model: Algorithm + dataset
+# format nama dataset: method + datasetname
+# random_forest/standard_scaler/affairs
 class MLModel(models.Model):
     name = models.CharField(max_length=100, default='')
     model_file = models.FileField(upload_to=_upload_location, blank=True)
@@ -40,4 +46,11 @@ class MLModel(models.Model):
             'target': self.target,
         }
 
+        requests.post(settings.TRAINING_API_URL, data=payload)
+
         return payload
+
+
+class AutoMLModel(MLModel):
+    autoML_project = models.ForeignKey(AutoML, related_name='automlmodels', on_delete=models.CASCADE)
+

@@ -25,4 +25,5 @@ urlpatterns = [
     path('preprocess/', include('data_cleaning_endpoint.urls')),
     path('profiling/', include('profiling.urls')),
     path('authentication/', include('authentication.urls')),
+    path('automl/', include('automl.urls'))
 ]

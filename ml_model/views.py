@@ -98,10 +98,6 @@ class MLModelDetailView(APIView):
         serializer = MLModelSerializer(data=payload)
         if serializer.is_valid():
             model = serializer.save()
-            response = {**serializer.data, 'dataset': DatasetSerializer(dataset).data}
-            # TODO: Commence training. Add implementation to the /train endpoint
-            requests.post(training_service_url, data=model.initiate_training())
-            print("Model trained!")
             return Response(model.initiate_training(), status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

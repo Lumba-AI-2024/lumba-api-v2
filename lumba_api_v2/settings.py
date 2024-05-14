@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'ml_model',
     'profiling',
     'authentication',
+    'automl',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

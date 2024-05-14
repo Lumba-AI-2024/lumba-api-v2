@@ -4,7 +4,9 @@ from dataset.models import Dataset
 
 # TODO: this should be a class (or classes) of enums
 algorithms = {
-    'REGRESSION' : ('LINEAR', 'DECISION_TREE', 'RANDOM_FOREST', 'NEURAL_NETWORK', 'XG_BOOST')
+    'REGRESSION' : ('LINEAR', 'DECISION_TREE', 'RANDOM_FOREST', 'NEURAL_NETWORK', 'XG_BOOST'),
+    'CLASSIFICATION' : ('DECISION_TREE', 'RANDOM_FOREST', 'NEURAL_NETWORK', 'XG_BOOST'),
+    'CLUSTERING' : ('KMEANS','DBSCAN')
 }
 
 # Create your models here.

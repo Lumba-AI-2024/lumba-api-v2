@@ -1,17 +1,113 @@
+import json
+
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Tuple
+
+from django.core.files.base import ContentFile
 from pandas.core.frame import DataFrame
 from pandas.core.series import Series
+from rest_framework import status
+from rest_framework.response import Response
+
 from data_science.core import DataScience
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler, MinMaxScaler
+
+from dataset.models import Dataset
+from dataset.serializers import DatasetSerializer
+
 
 class Preprocess(DataScience):
 
-    def __init__(self, dataframe: DataFrame, columns: list = None) -> None:
+    def __init__(self, dataframe: DataFrame, target: Dataset, columns: list = None, ) -> None:
         super().__init__(dataframe)
         self.columns = columns or []
-        # self.target = target
+        self.target = target
+
+    def handle(self, **kwargs):
+        algorithms = []
+        if kwargs['missing'] == '1':
+            algorithms.append("HandledMissing")
+            if kwargs['columns_missing'] != '':
+                col = kwargs['columns_missing'].split(",")
+                self.data_null_handler(col)
+            else:
+                self.data_null_handler()
+
+        if kwargs['duplication'] == '1':
+            algorithms.append("HandledDuplicates")
+            if kwargs['columns_duplication'] != '':
+                col = kwargs['columns_duplication'].split(",")
+                self.data_duplication_handler(col)
+            else:
+                self.data_duplication_handler()
+
+        if kwargs['outlier'] == '1':
+            algorithms.append("HandledOutlier")
+            self.data_outlier_handler()
+
+        if kwargs['ordinal'] == '1':
+            if kwargs['dict_ordinal_encoding'] != '':
+                result_dict = json.loads(kwargs['dict_ordinal_encoding'])
+                self.data_ordinal_encoding(result_dict)
+            else:
+                self.data_ordinal_encoding()
+
+        if kwargs['encoding'] == '1':
+            # TODO: do encoding
+            pass
+
+        if kwargs['scaling'] == '1':
+            # TODO: do scaling
+        pass
+
+
+
+        new_file_name = f"{','.join(algorithms)}_{self.target.name}"
+        new_file_content = self.dataframe.to_csv()
+        new_file = ContentFile(new_file_content.encode('utf-8'), name=new_file_name)
+
+        # create new file model with serializer
+        file_size = round(new_file.size / (1024 * 1024), 2)
+
+        # check and collect columns type
+        numeric, non_numeric = self.get_numeric_and_non_numeric_columns()
+        workspace_obj = self.target.workspace.pk
+        workspace_pk = workspace_obj.pk
+
+        payload = {
+            'file': new_file,
+            'name': new_file_name,
+            'size': file_size,
+            'username': self.target.username,
+            'workspace': workspace_pk,
+            'numeric': numeric,
+            'non_numeric': non_numeric,
+        }
+
+        return payload
+
+    def data_standardization(self) -> DataFrame:
+        df = self.dataframe.copy()
+
+        # use standard scaler from sklearn and just use .fit
+        scaler = StandardScaler()
+        scaler.fit(df)
+
+        self.dataframe = df
+
+        return df
+
+    def data_normalization(self) -> DataFrame:
+        df = self.dataframe.copy()
+
+        # use min-max scaler from sklearn and just use .fit
+        scaler = MinMaxScaler()
+        scaler.fit(df)
+
+        self.dataframe = df
+
+        return df
 
     def data_null_check(self) -> Dict[str, int]:
         df = self.dataframe[self.columns].copy()

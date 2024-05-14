@@ -55,11 +55,14 @@ class Preprocess(DataScience):
 
         if kwargs['encoding'] == '1':
             # TODO: do encoding
-            pass
+            self.data_encoding()
 
         if kwargs['scaling'] == '1':
             # TODO: do scaling
-        pass
+            if kwargs['scaling_type'] == 'normalization':
+                self.data_normalization()
+            else:
+                self.data_standardization()
 
 
 
@@ -220,6 +223,7 @@ class Preprocess(DataScience):
         self.dataframe = df
 
         return df
+    
     @staticmethod
     def _get_upper_lower_level(df_col: Series) -> Tuple[float, float]:
         """

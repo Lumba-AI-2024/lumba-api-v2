@@ -1062,7 +1062,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "73df4962-0080-4c5d-adab-b9e2f71bd9a6",
+				"id": "44ed9f79-215a-4f4d-bf53-6b3b0218c5c0",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1073,7 +1073,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "b5ae575e-ba9f-4583-b1d0-0811eb951b3b",
+				"id": "5af6354d-3e46-44c7-b3f9-a3a7aec3ed69",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1097,7 +1097,7 @@
 		},
 		{
 			"key": "datasetname",
-			"value": "heart.csv"
+			"value": "beauty.csv"
 		},
 		{
 			"key": "filename_temp",

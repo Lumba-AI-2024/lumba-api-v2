@@ -853,9 +853,58 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "workspace",
+									"value": "{{workspace_name}}",
+									"type": "text"
+								},
+								{
+									"key": "filename",
+									"value": "{{filename}}",
+									"type": "text"
+								},
+								{
+									"key": "columns_encoding",
+									"value": "doors,persons",
+									"type": "text"
+								},
+								{
+									"key": "encoding",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "columns_ordinal_encoding",
+									"value": "buying,meant,lug_boot,safety,class",
+									"type": "text"
+								},
+								{
+									"key": "ranks_ordinal_encoding",
+									"value": "vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good",
+									"type": "text"
+								},
+								{
+									"key": "ordinal_encoding",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "http://{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1&type={{workspace_type}}",
-							"protocol": "http",
+							"raw": "{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -898,8 +947,7 @@
 								},
 								{
 									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
+									"value": "{{workspace_type}}"
 								}
 							]
 						}

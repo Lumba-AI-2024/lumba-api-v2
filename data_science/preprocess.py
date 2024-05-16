@@ -113,17 +113,30 @@ class Preprocess(DataScience):
         return df
 
     def data_encoding(self) -> DataFrame:
-        df = self.dataframe[self.columns].copy()
+        df = self.dataframe.copy()
 
-        df = pd.get_dummies(df)
-        label = LabelEncoder()
         for col in df.columns:
-            if len(df[col].unique()) >= 2:
-                df[col] = label.fit_transform(df[col])
+            if len(df[col].unique()) == 1:
+                df.drop(col, axis=1, inplace=True)
+
+        # label encode for column with two unique value
+        le = LabelEncoder()
+        for col in df.columns:
+            if len(df[col].unique()) == 2:
+                df[col] = le.fit_transform(df[col])
+
+        #one hot encoding for column with more than two unique value
+        df = pd.get_dummies(df)
+
+        for col in df.columns:
+            if len(df[col].unique()) == 2:
+                df[col] = le.fit_transform(df[col])
 
         self.dataframe = df
 
         return df
+
+    
     @staticmethod
     def _get_upper_lower_level(df_col: Series) -> Tuple[float, float]:
         """

@@ -21,14 +21,13 @@ from workspace.models import Workspace
 @api_view()
 def null_check(request):
     dataset = get_dataset(
-        filename=request.query_params['filename'],
+        datasetname=request.query_params['datasetname'],
         workspace=request.query_params['workspace'],
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
     )
     if 'selected_columns' not in request.query_params:
-        dataframe = pd.read_csv(dataset.file)
-        preproceess = Preprocess(dataframe=dataframe)
+        preproceess = Preprocess(dataset=dataset)
         result = preproceess.data_duplication_check()
         return Response(result, status=status.HTTP_200_OK)
     columns = request.query_params['selected_columns']
@@ -42,7 +41,7 @@ def null_check(request):
 @api_view()
 def duplication_check(request):
     dataset = get_dataset(
-        filename=request.query_params['filename'],
+        datasetname=request.query_params['datasetname'],
         workspace=request.query_params['workspace'],
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
@@ -63,13 +62,12 @@ def duplication_check(request):
 @api_view()
 def outlier_check(request):
     dataset = get_dataset(
-        filename=request.query_params['filename'],
+        datasetname=request.query_params['datasetname'],
         workspace=request.query_params['workspace'],
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
     )
-    dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe)
+    preproceess = Preprocess(dataset=dataset)
     result = preproceess.data_outlier_check()
     return Response(result, status=status.HTTP_200_OK)
 
@@ -77,7 +75,7 @@ def outlier_check(request):
 @api_view()
 def get_boxplot(request):
     dataset = get_dataset(
-        filename=request.query_params['filename'],
+        datasetname=request.query_params['datasetname'],
         workspace=request.query_params['workspace'],
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
@@ -91,20 +89,18 @@ def get_boxplot(request):
 @api_view()
 def encode_check(request):
     dataset = get_dataset(
-        filename=request.query_params['filename'],
+        datasetname=request.query_params['datasetname'],
         workspace=request.query_params['workspace'],
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
     )
     if 'selected_columns' not in request.query_params:
-        dataframe = pd.read_csv(dataset.file)
-        preproceess = Preprocess(dataframe=dataframe)
+        preproceess = Preprocess(dataset=dataset)
         result = preproceess.data_duplication_check()
         return Response(result, status=status.HTTP_200_OK)
     columns = request.query_params['selected_columns']
     columns = columns.split(",")
-    dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe, columns=columns)
+    preproceess = Preprocess(dataset=dataset, columns=columns)
     result = preproceess.data_encode_check()
     return Response(result, status=status.HTTP_200_OK)
 
@@ -112,13 +108,12 @@ def encode_check(request):
 @api_view()
 def filter_data(request):
     dataset = get_dataset(
-        filename=request.query_params['filename'],
+        datasetname=request.query_params['datasetname'],
         workspace=request.query_params['workspace'],
         username=request.query_params['username'],
         workspace_type=request.query_params['type']
     )
-    dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe)
+    preproceess = Preprocess(dataset=dataset)
     # tambah list as a parameter
     result = preproceess.data_column_filter()
     return Response(result,status=status.HTTP_200_OK)
@@ -127,14 +122,14 @@ def filter_data(request):
 @api_view(['GET', 'POST'])
 def cleaning_handler(request):
     dataset = get_dataset(
-        filename=request.data['filename'],
+        datasetname=request.data['datasetname'],
         workspace=request.data['workspace'],
         username=request.data['username'],
         workspace_type=request.data['type']
     )
-    dataframe = pd.read_csv(dataset.file)
-    preprocess = Preprocess(dataframe=dataframe, target=dataset)
-    payload = preprocess.handle(**request.data.to_dict())
+    preprocess = Preprocess(dataset=dataset)
+    print(request.data.dict())
+    payload = preprocess.handle(**request.data.dict())
 
     serializer = DatasetSerializer(data=payload)
     if serializer.is_valid():
@@ -149,7 +144,7 @@ def cleaning_handler(request):
 def cleaning_automl(request):
     print(request.data)
     try:
-        file_name = request.data['filename']
+        file_name = request.data['datasetname']
         username = request.data['username']
         workspace = request.data['workspace']
         workspace_type = request.data['type']
@@ -157,15 +152,14 @@ def cleaning_automl(request):
         return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
 
     dataset = get_dataset(
-        filename=request.data['filename'],
+        datasetname=request.data['datasetname'],
         workspace=request.data['workspace'],
         username=request.data['username'],
         workspace_type=request.data['type']
     )
     columns=request.data['selectedTrainingColumns']
     columns = columns.split(",")
-    dataframe = pd.read_csv(dataset.file)
-    preprocess = Preprocess(dataframe=dataframe, columns=columns)
+    preprocess = Preprocess(dataset=dataset, columns=columns)
     
     # preprocess
     preprocess.data_null_handler()

@@ -24,10 +24,10 @@ class DatasetList(APIView):
         return Response(serializer.data)
 
 
-def get_dataset(filename, workspace_type, workspace, username):
+def get_dataset(datasetname, workspace_type, workspace, username):
     try:
         _workspace = Workspace.objects.get(name=workspace, username=username, type=workspace_type)
-        return Dataset.objects.get(name=filename, workspace=_workspace, username=username)
+        return Dataset.objects.get(name=datasetname, workspace=_workspace, username=username)
     except Dataset.DoesNotExist:
         raise Http404
 
@@ -35,7 +35,7 @@ def get_dataset(filename, workspace_type, workspace, username):
 class DatasetDetail(APIView):
 
     def post(self, request):
-        df = pandas.read_csv(request.data['file'].file)
+        df = pandas.read_csv(request.data['file'])
         ds = DataScience(dataframe=df)
         numeric, non_numeric = ds.get_numeric_and_non_numeric_columns()
         workspace = Workspace.objects.get(name=request.data['workspace'], username=request.data['username'])
@@ -55,7 +55,7 @@ class DatasetDetail(APIView):
 
     def get(self, request):
         try:
-            file_name = request.query_params['filename']
+            file_name = request.query_params['datasetname']
             username = request.query_params['username']
             workspace = request.query_params['workspace']
             workspace_type = request.query_params['type']
@@ -63,7 +63,7 @@ class DatasetDetail(APIView):
             return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
 
         dataframe = pandas.read_csv(
-            get_dataset(filename=file_name, username=username, workspace=workspace, workspace_type=workspace_type).file)
+            get_dataset(datasetname=file_name, username=username, workspace=workspace, workspace_type=workspace_type).file)
 
         ds = DataScience(dataframe)
 
@@ -72,13 +72,13 @@ class DatasetDetail(APIView):
 
     def put(self, request):
         dataset = get_dataset(
-            filename=request.query_params['filename'],
+            datasetname=request.query_params['datasetname'],
             workspace_type=request.query_params['type'],
             workspace=request.query_params['workspace'],
             username=request.query_params['username']
         )
 
-        serializer = DatasetSerializer(dataset, {'name': request.data['newfilename']}, partial=True)
+        serializer = DatasetSerializer(dataset, {'name': request.data['newdatasetname']}, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -87,7 +87,7 @@ class DatasetDetail(APIView):
 
     def delete(self, request):
         dataset = get_dataset(
-            filename=request.data['filename'],
+            datasetname=request.data['datasetname'],
             workspace_type=request.data['type'],
             workspace=request.data['workspace'],
             username=request.data['username']

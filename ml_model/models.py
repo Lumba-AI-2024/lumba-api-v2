@@ -1,13 +1,12 @@
 import requests
 from django.db import models
 
-from automl.models import AutoML
 from dataset.models import Dataset
 from lumba_api_v2 import settings
 
 
-def _upload_location(instance, filename):
-    return f'{instance.dataset.workspace.username}/{instance.dataset.workspace.name}/{filename}'
+def _upload_location(instance, datasetname):
+    return f'{instance.dataset.workspace.username}/{instance.dataset.workspace.name}/{datasetname}'
 
 
 # Create your models here.
@@ -52,5 +51,5 @@ class MLModel(models.Model):
 
 
 class AutoMLModel(MLModel):
-    autoML_project = models.ForeignKey(AutoML, related_name='automlmodels', on_delete=models.CASCADE)
+    autoML_project = models.ForeignKey('automl.AutoML', related_name='automlmodels', on_delete=models.CASCADE)
 

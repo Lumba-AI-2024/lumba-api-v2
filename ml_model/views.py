@@ -82,7 +82,7 @@ class MLModelDetailView(APIView):
     def post(self, request):
         """
         modelname:affairs
-        filename:affairs.csv
+        datasetname:affairs.csv
         username:{{username}}
         workspace:{{workspace_name}}
         method:REGRESSION
@@ -93,7 +93,7 @@ class MLModelDetailView(APIView):
         """
         print(request.data.dict())
         workspace = Workspace.objects.get(username=request.data['username'], name=request.data['workspace'])
-        dataset = Dataset.objects.get(name=request.data['filename'], workspace=workspace, username=request.data['username'])
+        dataset = Dataset.objects.get(name=request.data['datasetname'], workspace=workspace, username=request.data['username'])
         payload = {**request.data.dict(), 'dataset': dataset.pk, 'name': request.data['modelname']}
         serializer = MLModelSerializer(data=payload)
         if serializer.is_valid():

@@ -242,7 +242,7 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "filename",
+									"key": "datasetname",
 									"type": "text",
 									"value": "affairs.csv"
 								},
@@ -281,7 +281,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{base_url}}/file/?filename=affairs.csv&username={{username}}&workspace={{workspace_name}}&page=1&rowsperpage=10",
+							"raw": "{{base_url}}/file/?datasetname=affairs.csv&username={{username}}&workspace={{workspace_name}}&page=1&rowsperpage=10",
 							"host": [
 								"{{base_url}}"
 							],
@@ -291,7 +291,7 @@
 							],
 							"query": [
 								{
-									"key": "filename",
+									"key": "datasetname",
 									"value": "affairs.csv",
 									"type": "text"
 								},
@@ -333,14 +333,14 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "newfilename",
+									"key": "newdatasetname",
 									"value": "affairs.csv",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/file/?oldfilename={{filename_temp}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/file/?olddatasetname={{datasetname_temp}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -350,8 +350,8 @@
 							],
 							"query": [
 								{
-									"key": "oldfilename",
-									"value": "{{filename_temp}}"
+									"key": "olddatasetname",
+									"value": "{{datasetname_temp}}"
 								},
 								{
 									"key": "username",
@@ -379,14 +379,14 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "newfilename",
-									"value": "{{filename_temp}}",
+									"key": "newdatasetname",
+									"value": "{{datasetname_temp}}",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/file/?oldfilename={{filename}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/file/?olddatasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -396,8 +396,8 @@
 							],
 							"query": [
 								{
-									"key": "oldfilename",
-									"value": "{{filename}}"
+									"key": "olddatasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "username",
@@ -465,7 +465,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/profiling/barchart/?filename={{filename}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -476,8 +476,8 @@
 							],
 							"query": [
 								{
-									"key": "filename",
-									"value": "{{filename}}",
+									"key": "datasetname",
+									"value": "{{datasetname}}",
 									"type": "text"
 								},
 								{
@@ -505,7 +505,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/profiling/barchart/?filename={{filename}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -516,8 +516,8 @@
 							],
 							"query": [
 								{
-									"key": "filename",
-									"value": "{{filename}}",
+									"key": "datasetname",
+									"value": "{{datasetname}}",
 									"type": "text"
 								},
 								{
@@ -559,7 +559,7 @@
 									"type": "text"
 								},
 								{
-									"key": "filename",
+									"key": "datasetname",
 									"value": "affairs.csv",
 									"type": "text"
 								},
@@ -813,7 +813,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/null?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/null?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -831,8 +831,8 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "type",
@@ -854,7 +854,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1&type={{workspace_type}}",
+							"raw": "http://{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1&type={{workspace_type}}",
 							"protocol": "http",
 							"host": [
 								"{{base_url}}"
@@ -873,8 +873,8 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "columns_encoding",
@@ -916,7 +916,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/outlier?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/outlier?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -934,8 +934,8 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "type",
@@ -957,7 +957,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -975,8 +975,8 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "type",
@@ -1048,11 +1048,11 @@
 			"value": "hera"
 		},
 		{
-			"key": "filename",
+			"key": "datasetname",
 			"value": "heart.csv"
 		},
 		{
-			"key": "filename_temp",
+			"key": "datasetname_temp",
 			"value": "test.csv"
 		},
 		{

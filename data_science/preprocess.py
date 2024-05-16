@@ -1,5 +1,6 @@
 import json
 
+import pandas
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Tuple
@@ -19,15 +20,15 @@ from dataset.serializers import DatasetSerializer
 
 class Preprocess(DataScience):
 
-    def __init__(self, dataframe: DataFrame, target: Dataset, columns: list = None, ) -> None:
+    def __init__(self, dataset: Dataset, columns: list = None) -> None:
+        dataframe = pandas.read_csv(dataset.file)
         super().__init__(dataframe)
         self.columns = columns or []
-        self.target = target
+        print(f"This is in Preproc -> {columns}")
+        self.target = dataset
 
-    def handle(self, **kwargs):
-        algorithms = []
+    def handle(self, filename_prefix='preprocessed', **kwargs):
         if kwargs['missing'] == '1':
-            algorithms.append("HandledMissing")
             if kwargs['columns_missing'] != '':
                 col = kwargs['columns_missing'].split(",")
                 self.data_null_handler(col)
@@ -35,7 +36,6 @@ class Preprocess(DataScience):
                 self.data_null_handler()
 
         if kwargs['duplication'] == '1':
-            algorithms.append("HandledDuplicates")
             if kwargs['columns_duplication'] != '':
                 col = kwargs['columns_duplication'].split(",")
                 self.data_duplication_handler(col)
@@ -43,7 +43,6 @@ class Preprocess(DataScience):
                 self.data_duplication_handler()
 
         if kwargs['outlier'] == '1':
-            algorithms.append("HandledOutlier")
             self.data_outlier_handler()
 
         if kwargs['ordinal'] == '1':
@@ -54,19 +53,15 @@ class Preprocess(DataScience):
                 self.data_ordinal_encoding()
 
         if kwargs['encoding'] == '1':
-            # TODO: do encoding
             self.data_encoding()
 
         if kwargs['scaling'] == '1':
-            # TODO: do scaling
             if kwargs['scaling_type'] == 'normalization':
                 self.data_normalization()
             else:
                 self.data_standardization()
 
-
-
-        new_file_name = f"{','.join(algorithms)}_{self.target.name}"
+        new_file_name = f"{filename_prefix}_{self.target.name}"
         new_file_content = self.dataframe.to_csv()
         new_file = ContentFile(new_file_content.encode('utf-8'), name=new_file_name)
 
@@ -75,15 +70,14 @@ class Preprocess(DataScience):
 
         # check and collect columns type
         numeric, non_numeric = self.get_numeric_and_non_numeric_columns()
-        workspace_obj = self.target.workspace.pk
-        workspace_pk = workspace_obj.pk
+        workspace = self.target.workspace.pk
 
         payload = {
             'file': new_file,
             'name': new_file_name,
             'size': file_size,
             'username': self.target.username,
-            'workspace': workspace_pk,
+            'workspace': workspace,
             'numeric': numeric,
             'non_numeric': non_numeric,
         }

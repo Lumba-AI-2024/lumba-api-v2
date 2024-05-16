@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from automl.models import AutoML
+from automl.serializers import AutoMLSerializer
 from dataset.models import Dataset
-from ml_model.serializers import AutoMLModelSerializer
 from workspace.models import Workspace
 
 
@@ -15,8 +15,9 @@ class AutoMLListView(APIView):
     def get(self, request):
         workspace = Workspace.objects.get(name=request.query_params['workspace'],
                                           username=request.query_params['username'])
-        automls = AutoML.objects.get(workspace=workspace)
-        serializer = AutoMLModelSerializer(automls, many=True)
+        datasets = Dataset.objects.filter(workspace=workspace)
+        automls = AutoML.objects.filter(dataset__in=datasets)
+        serializer = AutoMLSerializer(automls, many=True)
         return Response(serializer.data)
 
 
@@ -42,7 +43,7 @@ class AutoMLDetailView(APIView):
             workspace=request.query_params['workspace'],
             username=request.query_params['username']
         )
-        serializer = AutoMLModelSerializer(automl_project)
+        serializer = AutoMLSerializer(automl_project)
         return Response(serializer.data)
 
     def put(self, request):
@@ -57,7 +58,7 @@ class AutoMLDetailView(APIView):
             workspace=request.query_params['workspace'],
             username=request.query_params['username']
         )
-        serializer = AutoMLModelSerializer(automl_project, data=request.data, partial=True)
+        serializer = AutoMLSerializer(automl_project, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -65,7 +66,7 @@ class AutoMLDetailView(APIView):
 
     def post(self, request):
         """
-        filename:
+        datasetname:
         username:
         workspace:
         automlname:
@@ -75,10 +76,10 @@ class AutoMLDetailView(APIView):
         :return:
         """
         workspace = Workspace.objects.get(username=request.data['username'], name=request.data['workspace'])
-        dataset = Dataset.objects.get(name=request.data['filename'], workspace=workspace,
+        dataset = Dataset.objects.get(name=request.data['datasetname'], workspace=workspace,
                                       username=request.data['username'])
         payload = {**request.data.dict(), 'dataset': dataset.pk, 'name': request.data['automlname']}
-        serializer = AutoMLModelSerializer(data=payload)
+        serializer = AutoMLSerializer(data=payload)
         if serializer.is_valid():
             automl_project = serializer.save()
             return Response(automl_project.initiate_project(), status=status.HTTP_201_CREATED)

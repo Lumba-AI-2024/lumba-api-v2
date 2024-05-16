@@ -1061,14 +1061,74 @@
 			"name": "AutoML",
 			"item": [
 				{
-					"name": "New Request",
+					"name": "List AutoMLs",
 					"id": "9881d00c-dfc0-47d7-97fe-b93b1c1954a0",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/automl/list?workspace={{workspace_name}}&username={{username}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"automl",
+								"list"
+							],
+							"query": [
+								{
+									"key": "workspace",
+									"value": "{{workspace_name}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create AutoMLs",
+					"id": "e724beb8-bd53-4fbf-ab28-325cf711ea21",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "workspace",
+									"value": "{{workspace_name}}",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "dataset",
+									"value": "{{datasetname}}",
+									"type": "text"
+								},
+								{
+									"key": "automlname",
+									"value": "beauty",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{base_url}}/automl/"
 					},
 					"response": []
 				}

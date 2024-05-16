@@ -555,12 +555,12 @@
 							"formdata": [
 								{
 									"key": "modelname",
-									"value": "affairs",
+									"value": "beauty",
 									"type": "text"
 								},
 								{
-									"key": "filename",
-									"value": "affairs.csv",
+									"key": "datasetname",
+									"value": "{{datasetname}}",
 									"type": "text"
 								},
 								{
@@ -585,12 +585,12 @@
 								},
 								{
 									"key": "feature",
-									"value": "rate_marriage,age,yrs_married,children,religious,educ,occupation,occupation_husb",
+									"value": "wage,exper,union,goodhlth,black,female,married,service,educ,looks",
 									"type": "text"
 								},
 								{
 									"key": "target",
-									"value": "affairs",
+									"value": "beauty",
 									"type": "text"
 								}
 							]
@@ -1056,6 +1056,24 @@
 				}
 			],
 			"id": "a738b762-19fe-415e-a90f-cb26cbe3b323"
+		},
+		{
+			"name": "AutoML",
+			"item": [
+				{
+					"name": "New Request",
+					"id": "9881d00c-dfc0-47d7-97fe-b93b1c1954a0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"id": "72d9a0b6-2351-4597-9b0d-9e078a7ee834"
 		}
 	],
 	"event": [

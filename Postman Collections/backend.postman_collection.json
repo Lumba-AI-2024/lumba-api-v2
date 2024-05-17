@@ -242,7 +242,7 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "filename",
+									"key": "datasetname",
 									"type": "text",
 									"value": "affairs.csv"
 								},
@@ -333,7 +333,7 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "newfilename",
+									"key": "newdatasetname",
 									"value": "affairs.csv",
 									"type": "text"
 								}
@@ -379,8 +379,8 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "newfilename",
-									"value": "{{filename_temp}}",
+									"key": "newdatasetname",
+									"value": "{{datasetname_temp}}",
 									"type": "text"
 								}
 							]
@@ -851,7 +851,7 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "formdata",
@@ -867,8 +867,8 @@
 									"type": "text"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}",
+									"key": "datasetname",
+									"value": "{{datasetname}}",
 									"type": "text"
 								},
 								{
@@ -904,50 +904,60 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/handle/",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"preprocess",
-								"handle"
+								"handle",
+								""
 							],
 							"query": [
 								{
 									"key": "username",
-									"value": "{{username}}"
+									"value": "{{username}}",
+									"disabled": true
 								},
 								{
 									"key": "workspace",
-									"value": "{{workspace_name}}"
+									"value": "{{workspace_name}}",
+									"disabled": true
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
+									"key": "datasetname",
+									"value": "{{datasetname}}",
+									"disabled": true
 								},
 								{
 									"key": "columns_encoding",
-									"value": "doors,persons"
+									"value": "doors,persons",
+									"disabled": true
 								},
 								{
 									"key": "encoding",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "columns_ordinal_encoding",
-									"value": "buying,meant,lug_boot,safety,class"
+									"value": "buying,meant,lug_boot,safety,class",
+									"disabled": true
 								},
 								{
 									"key": "ranks_ordinal_encoding",
-									"value": "vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good"
+									"value": "vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good",
+									"disabled": true
 								},
 								{
 									"key": "ordinal_encoding",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "type",
-									"value": "{{workspace_type}}"
+									"value": "{{workspace_type}}",
+									"disabled": true
 								}
 							]
 						}
@@ -1160,7 +1170,7 @@
 			"value": "beauty.csv"
 		},
 		{
-			"key": "filename_temp",
+			"key": "datasetname_temp",
 			"value": "test.csv"
 		},
 		{

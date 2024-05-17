@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "c55ef6b4-2885-408a-b307-8d9f161c7441",
 		"name": "Backend",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24846545"
 	},
 	"item": [
 		{
@@ -10,10 +11,6 @@
 			"item": [
 				{
 					"name": "Create New Workspace",
-					"id": "15a26a87-192d-4bda-b24b-f9bfdb4daa4c",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -34,21 +31,24 @@
 									"key": "description",
 									"value": "test",
 									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
 								}
 							]
 						},
-						"url": "{{base_url}}/workspace/"
+						"url": {
+							"raw": "{{base_url}}/workspace/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"workspace",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Read Workspace",
-					"id": "8aa5261c-7efe-4242-86b0-e98a67ec2874",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -60,7 +60,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "{{base_url}}/workspace/?name={{workspace_name}}&username={{username}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/workspace/?name={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -72,14 +72,6 @@
 								{
 									"key": "name",
 									"value": "{{workspace_name}}"
-								},
-								{
-									"key": "username",
-									"value": "{{username}}"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}"
 								}
 							]
 						}
@@ -88,7 +80,6 @@
 				},
 				{
 					"name": "List All Workspace",
-					"id": "0880458a-541a-4cf2-a9f1-78f704ff8032",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -99,16 +90,22 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{base_url}}/workspace/list/"
+						"url": {
+							"raw": "{{base_url}}/workspace/list/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"workspace",
+								"list",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Edit Workspace",
-					"id": "3bfbe0ad-3869-465a-98d4-03a7cb060941",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -153,10 +150,6 @@
 				},
 				{
 					"name": "Delete Workspace",
-					"id": "0397a9f6-c34a-4109-b630-289962bba7ac",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -180,22 +173,26 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/workspace/"
+						"url": {
+							"raw": "{{base_url}}/workspace/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"workspace",
+								""
+							]
+						}
 					},
 					"response": []
 				}
-			],
-			"id": "2ad59e78-4a93-46b8-8ad8-7a6441822904"
+			]
 		},
 		{
 			"name": "Files",
 			"item": [
 				{
 					"name": "Upload File",
-					"id": "484dff27-1ef0-4336-b5cc-a04024d71526",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -206,7 +203,7 @@
 									"key": "file",
 									"description": "Uploaded CSV File",
 									"type": "file",
-									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/dataset/affairs.csv"
+									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/lumba-preprocess/directory/gbhisma/ws1/affairs.csv"
 								},
 								{
 									"key": "username",
@@ -217,24 +214,24 @@
 									"key": "workspace",
 									"value": "{{workspace_name}}",
 									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
 								}
 							]
 						},
-						"url": "{{base_url}}/file/"
+						"url": {
+							"raw": "{{base_url}}/file/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"file",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Delete File",
-					"id": "fe26d8d1-205b-4485-9a6e-e683c63d9d75",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -243,55 +240,6 @@
 							"formdata": [
 								{
 									"key": "datasetname",
-									"type": "text",
-									"value": "affairs.csv"
-								},
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								},
-								{
-									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
-								}
-							]
-						},
-						"url": "{{base_url}}/file/"
-					},
-					"response": []
-				},
-				{
-					"name": "Preview Data",
-					"id": "89a7220e-7fc4-4b63-b3f7-4bf7ee2dc9a7",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": []
-						},
-						"url": {
-							"raw": "{{base_url}}/file/?filename=affairs.csv&username={{username}}&workspace={{workspace_name}}&page=1&rowsperpage=10",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"file",
-								""
-							],
-							"query": [
-								{
-									"key": "filename",
 									"value": "affairs.csv",
 									"type": "text"
 								},
@@ -304,16 +252,63 @@
 									"key": "workspace",
 									"value": "{{workspace_name}}",
 									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/file/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"file",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Preview Data",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{base_url}}/file/?datasetname=affairs.csv&username={{username}}&workspace={{workspace_name}}&page=1&rowsperpage=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"file",
+								""
+							],
+							"query": [
+								{
+									"key": "datasetname",
+									"value": "affairs.csv"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "workspace",
+									"value": "{{workspace_name}}"
 								},
 								{
 									"key": "page",
-									"value": "1",
-									"type": "text"
+									"value": "1"
 								},
 								{
 									"key": "rowsperpage",
-									"value": "10",
-									"type": "text"
+									"value": "10"
 								}
 							]
 						}
@@ -322,10 +317,6 @@
 				},
 				{
 					"name": "Update File 2",
-					"id": "af54ab5c-40a7-4363-af57-1d8eb62ef254",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -340,7 +331,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/file/?oldfilename={{filename_temp}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/file/?olddatasetname={{datasetname_temp}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -350,8 +341,8 @@
 							],
 							"query": [
 								{
-									"key": "oldfilename",
-									"value": "{{filename_temp}}"
+									"key": "olddatasetname",
+									"value": "{{datasetname_temp}}"
 								},
 								{
 									"key": "username",
@@ -368,10 +359,6 @@
 				},
 				{
 					"name": "Update File 1",
-					"id": "cb83cc12-b0f6-4584-ade0-fc7f3e2e89a2",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -386,7 +373,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{base_url}}/file/?oldfilename={{filename}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/file/?olddatasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -396,8 +383,8 @@
 							],
 							"query": [
 								{
-									"key": "oldfilename",
-									"value": "{{filename}}"
+									"key": "olddatasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "username",
@@ -414,7 +401,6 @@
 				},
 				{
 					"name": "List File",
-					"id": "e17262b6-1198-45e8-9c6c-e7d2b56908e2",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -449,23 +435,18 @@
 					},
 					"response": []
 				}
-			],
-			"id": "58095154-e5ce-410c-bd98-b6227e81a0c5"
+			]
 		},
 		{
 			"name": "Profiling",
 			"item": [
 				{
 					"name": "BarChart",
-					"id": "b193e387-add1-460f-ade1-7b6707f0ebd0",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/profiling/barchart/?filename={{filename}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -476,19 +457,16 @@
 							],
 							"query": [
 								{
-									"key": "filename",
-									"value": "{{filename}}",
-									"type": "text"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
+									"value": "{{username}}"
 								},
 								{
 									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
+									"value": "{{workspace_name}}"
 								}
 							]
 						}
@@ -497,15 +475,11 @@
 				},
 				{
 					"name": "Statistics",
-					"id": "f936f86f-970e-40e4-be1a-4513a5bb9212",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/profiling/barchart/?filename={{filename}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -516,37 +490,29 @@
 							],
 							"query": [
 								{
-									"key": "filename",
-									"value": "{{filename}}",
-									"type": "text"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
+									"value": "{{username}}"
 								},
 								{
 									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
+									"value": "{{workspace_name}}"
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"id": "ef6ef38a-485c-4fef-9d82-68a769c2fc3c"
+			]
 		},
 		{
 			"name": "Modeling",
 			"item": [
 				{
 					"name": "Create Model",
-					"id": "759d2a83-fcf9-41ff-8b1d-ee646e5da7cd",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -555,12 +521,12 @@
 							"formdata": [
 								{
 									"key": "modelname",
-									"value": "beauty",
+									"value": "affairs",
 									"type": "text"
 								},
 								{
 									"key": "datasetname",
-									"value": "{{datasetname}}",
+									"value": "affairs.csv",
 									"type": "text"
 								},
 								{
@@ -585,26 +551,31 @@
 								},
 								{
 									"key": "feature",
-									"value": "wage,exper,union,goodhlth,black,female,married,service,educ,looks",
+									"value": "rate_marriage,age,yrs_married,children,religious,educ,occupation,occupation_husb",
 									"type": "text"
 								},
 								{
 									"key": "target",
-									"value": "beauty",
+									"value": "affairs",
 									"type": "text"
 								}
 							]
 						},
-						"url": "{{base_url}}/modeling/"
+						"url": {
+							"raw": "{{base_url}}/modeling/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modeling",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Update Model",
-					"id": "0226ace0-2b20-4ba6-9166-a2cf92d21ae3",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -630,23 +601,19 @@
 							"query": [
 								{
 									"key": "datasetname",
-									"value": "affairs.csv",
-									"type": "text"
+									"value": "affairs.csv"
 								},
 								{
 									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
+									"value": "{{workspace_name}}"
 								},
 								{
 									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
+									"value": "{{username}}"
 								},
 								{
 									"key": "modelname",
-									"value": "affairs",
-									"type": "text"
+									"value": "affairs"
 								}
 							]
 						}
@@ -655,10 +622,6 @@
 				},
 				{
 					"name": "List Model",
-					"id": "f0beab34-1443-4f94-a2cc-edc61d7b1181",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -675,13 +638,11 @@
 							"query": [
 								{
 									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
+									"value": "{{workspace_name}}"
 								},
 								{
 									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
+									"value": "{{username}}"
 								}
 							]
 						}
@@ -690,10 +651,6 @@
 				},
 				{
 					"name": "Get Model Detail",
-					"id": "2e016385-f8ee-4d7c-a9f7-357d8298e8f6",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -721,8 +678,7 @@
 								},
 								{
 									"key": "modelname",
-									"value": "affairs",
-									"type": "text"
+									"value": "affairs"
 								}
 							]
 						}
@@ -731,10 +687,6 @@
 				},
 				{
 					"name": "Delete Model",
-					"id": "5f67222c-afd4-4f3c-818a-1521f98943a7",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -758,16 +710,21 @@
 								}
 							]
 						},
-						"url": "{{base_url}}/modeling/"
+						"url": {
+							"raw": "{{base_url}}/modeling/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"modeling",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Test Model",
-					"id": "11a3689d-0f7b-4468-bc08-b0bc2a9b7360",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -784,36 +741,29 @@
 							"query": [
 								{
 									"key": "modelname",
-									"value": "affairs",
-									"type": "text"
+									"value": "affairs"
 								},
 								{
 									"key": "feature",
-									"value": null,
-									"type": "text"
+									"value": null
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"id": "51752710-e0ac-4668-b1a6-24dd3663156a"
+			]
 		},
 		{
 			"name": "Preprocess",
 			"item": [
 				{
-					"name": "Null Check",
-					"id": "a4b0f582-2628-458a-a8f0-bebfc51fd9ef",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Null Check Copy",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/null?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/null?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -831,13 +781,8 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								}
 							]
 						}
@@ -845,119 +790,52 @@
 					"response": []
 				},
 				{
-					"name": "Master Handle",
-					"id": "acbd44e2-6629-4268-ac18-bf842642024e",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Master Handler Copy",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								},
-								{
-									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
-								},
-								{
-									"key": "datasetname",
-									"value": "{{datasetname}}",
-									"type": "text"
-								},
-								{
-									"key": "columns_encoding",
-									"value": "doors,persons",
-									"type": "text"
-								},
-								{
-									"key": "encoding",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "columns_ordinal_encoding",
-									"value": "buying,meant,lug_boot,safety,class",
-									"type": "text"
-								},
-								{
-									"key": "ranks_ordinal_encoding",
-									"value": "vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good",
-									"type": "text"
-								},
-								{
-									"key": "ordinal_encoding",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
-								}
-							]
-						},
 						"url": {
-							"raw": "{{base_url}}/preprocess/handle/",
+							"raw": "http://{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace}}&datasetname={{datasetname}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1",
+							"protocol": "http",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"preprocess",
-								"handle",
-								""
+								"handle"
 							],
 							"query": [
 								{
 									"key": "username",
-									"value": "{{username}}",
-									"disabled": true
+									"value": "{{username}}"
 								},
 								{
 									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"disabled": true
+									"value": "{{workspace}}"
 								},
 								{
 									"key": "datasetname",
-									"value": "{{datasetname}}",
-									"disabled": true
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "columns_encoding",
-									"value": "doors,persons",
-									"disabled": true
+									"value": "doors,persons"
 								},
 								{
 									"key": "encoding",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "columns_ordinal_encoding",
-									"value": "buying,meant,lug_boot,safety,class",
-									"disabled": true
+									"value": "buying,meant,lug_boot,safety,class"
 								},
 								{
 									"key": "ranks_ordinal_encoding",
-									"value": "vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good",
-									"disabled": true
+									"value": "vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good"
 								},
 								{
 									"key": "ordinal_encoding",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"disabled": true
+									"value": "1"
 								}
 							]
 						}
@@ -965,16 +843,12 @@
 					"response": []
 				},
 				{
-					"name": "Outlier Handler",
-					"id": "ab98320f-253f-4634-989c-9c2da92b8897",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "Outlier Handler Copy",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/outlier?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/outlier?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -992,13 +866,8 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								}
 							]
 						}
@@ -1006,16 +875,12 @@
 					"response": []
 				},
 				{
-					"name": "BoxPlot Handler",
-					"id": "3e97e306-49ea-439c-b8e1-df73a5b0e7da",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "BoxPlot Handler Copy",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1033,106 +898,21 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
-								},
-								{
-									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"id": "466b5f66-9869-443c-b0d6-14e5b8e01ac8"
-		},
-		{
-			"name": "AutoML",
-			"item": [
-				{
-					"name": "List AutoMLs",
-					"id": "9881d00c-dfc0-47d7-97fe-b93b1c1954a0",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/automl/list?workspace={{workspace_name}}&username={{username}}",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"automl",
-								"list"
-							],
-							"query": [
-								{
-									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
-								},
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create AutoMLs",
-					"id": "e724beb8-bd53-4fbf-ab28-325cf711ea21",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "workspace",
-									"value": "{{workspace_name}}",
-									"type": "text"
-								},
-								{
-									"key": "username",
-									"value": "{{username}}",
-									"type": "text"
-								},
-								{
-									"key": "dataset",
-									"value": "{{datasetname}}",
-									"type": "text"
-								},
-								{
-									"key": "automlname",
-									"value": "beauty",
-									"type": "text"
-								}
-							]
-						},
-						"url": "{{base_url}}/automl/"
-					},
-					"response": []
-				}
-			],
-			"id": "72d9a0b6-2351-4597-9b0d-9e078a7ee834"
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "75ab11ab-01ed-4577-b633-00d2a86bf5fb",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1143,7 +923,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "a000eb0f-518b-43c5-9c2b-1441adc2449f",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1167,15 +946,11 @@
 		},
 		{
 			"key": "datasetname",
-			"value": "beauty.csv"
+			"value": "affairs.csv"
 		},
 		{
 			"key": "datasetname_temp",
 			"value": "test.csv"
-		},
-		{
-			"key": "workspace_type",
-			"value": "predicting"
 		}
 	]
 }

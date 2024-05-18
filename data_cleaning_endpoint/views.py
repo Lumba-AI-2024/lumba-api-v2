@@ -32,8 +32,8 @@ def null_check(request):
         return Response(result, status=status.HTTP_200_OK)
     columns = request.query_params['selected_columns']
     columns = columns.split(",")
-    dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe, columns=columns)
+    # dataframe = pd.read_csv(dataset.file)
+    preproceess = Preprocess(dataset=dataset, columns=columns)
     result = preproceess.data_null_check()
     return Response(result, status=status.HTTP_200_OK)
 
@@ -53,8 +53,8 @@ def duplication_check(request):
         return Response(result, status=status.HTTP_200_OK)
     columns = request.query_params['selected_columns']
     columns = columns.split(",")
-    dataframe = pd.read_csv(dataset.file)
-    preproceess = Preprocess(dataframe=dataframe, columns=columns)
+    # dataframe = pd.read_csv(dataset.file)
+    preproceess = Preprocess(dataset=dataset, columns=columns)
     result = preproceess.data_duplication_check()
     return Response(result, status=status.HTTP_200_OK)
 
@@ -142,7 +142,7 @@ def cleaning_handler(request):
 
 @api_view(['GET', 'POST'])
 def cleaning_automl(request):
-    print(request.data)
+    print("inilho",request.data)
     try:
         file_name = request.data['datasetname']
         username = request.data['username']

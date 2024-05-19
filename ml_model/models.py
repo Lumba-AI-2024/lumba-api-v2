@@ -37,7 +37,7 @@ class MLModel(models.Model):
             'workspace': self.dataset.workspace.name,
             'type': self.dataset.workspace.type,
             'username': self.dataset.username,
-            'dataset_link': self.dataset.full_path,
+            'dataset_link': self.dataset.file.url,
             'method': self.method,
             'algorithm': self.algorithm,
             'metrics': self.metrics,

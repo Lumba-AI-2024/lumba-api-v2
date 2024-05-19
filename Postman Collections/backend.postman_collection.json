@@ -206,7 +206,7 @@
 									"key": "file",
 									"description": "Uploaded CSV File",
 									"type": "file",
-									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/dataset/affairs.csv"
+									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/dataset/beauty.csv"
 								},
 								{
 									"key": "username",
@@ -1054,7 +1054,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1072,13 +1072,12 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
+									"value": "{{workspace_type}}"
 								}
 							]
 						}
@@ -1148,13 +1147,28 @@
 									"type": "text"
 								},
 								{
-									"key": "dataset",
+									"key": "datasetname",
 									"value": "{{datasetname}}",
 									"type": "text"
 								},
 								{
 									"key": "automlname",
 									"value": "beauty",
+									"type": "text"
+								},
+								{
+									"key": "method",
+									"value": "REGRESSION",
+									"type": "text"
+								},
+								{
+									"key": "feature",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "target",
+									"value": "",
 									"type": "text"
 								}
 							]
@@ -1171,7 +1185,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "75ab11ab-01ed-4577-b633-00d2a86bf5fb",
+				"id": "e5edb900-db6b-4427-9726-ee5618d2e669",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1182,7 +1196,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "a000eb0f-518b-43c5-9c2b-1441adc2449f",
+				"id": "ebad927a-8a2c-4af5-bb5c-e6d39002d234",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -1202,7 +1216,7 @@
 		},
 		{
 			"key": "username",
-			"value": "hera"
+			"value": "gbhisma"
 		},
 		{
 			"key": "datasetname",

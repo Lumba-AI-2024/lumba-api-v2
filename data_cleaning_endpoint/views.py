@@ -47,13 +47,11 @@ def duplication_check(request):
         workspace_type=request.query_params['type']
     )
     if 'selected_columns' not in request.query_params:
-        dataframe = pd.read_csv(dataset.file)
-        preproceess = Preprocess(dataframe=dataframe)
+        preproceess = Preprocess(dataset=dataset)
         result = preproceess.data_duplication_check()
         return Response(result, status=status.HTTP_200_OK)
     columns = request.query_params['selected_columns']
     columns = columns.split(",")
-    # dataframe = pd.read_csv(dataset.file)
     preproceess = Preprocess(dataset=dataset, columns=columns)
     result = preproceess.data_duplication_check()
     return Response(result, status=status.HTTP_200_OK)

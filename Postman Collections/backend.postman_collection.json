@@ -1156,6 +1156,21 @@
 									"key": "automlname",
 									"value": "beauty",
 									"type": "text"
+								},
+								{
+									"key": "method",
+									"value": "REGRESSION",
+									"type": "text"
+								},
+								{
+									"key": "feature",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "target",
+									"value": "",
+									"type": "text"
 								}
 							]
 						},

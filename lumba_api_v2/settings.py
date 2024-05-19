@@ -9,21 +9,25 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+load_dotenv()
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8@t)qa$y#lrjwje&cj$@%rwzx1(9%fnm+h&p=r*w4!8i-l#6n!'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -98,16 +102,17 @@ DATABASES = {
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'lumba_ai_new',
-        'USER': 'postgres',
-        'PASSWORD': 'aSTIoneiRDiR',
-        'HOST': '34.101.59.56',  # Set to the database host, e.g., 'localhost' or '127.0.0.1'
-        'PORT': '5432',  # Set to the database port, default is '5432' for PostgreSQL
+if os.getenv('ENV') == 'prod':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.getenv('PSQL_DB_NAME'),
+            'USER': os.getenv('PSQL_USER'),
+            'PASSWORD': os.getenv('PSQL_PASSWORD'),
+            'HOST': os.getenv('PSQL_HOST'),  # Set to the database host, e.g., 'localhost' or '127.0.0.1'
+            'PORT': '5432',  # Set to the database port, default is '5432' for PostgreSQL
+        }
     }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -153,13 +158,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Uploaded file directory
-# TODO: use s3/minio
 
 MEDIA_URL = '/directory/'
 MEDIA_ROOT = BASE_DIR / 'directory'
 
 # External URLs
-TRAINING_API_URL = 'http://127.0.0.1:7000/train/'
+TRAINING_API_URL = os.getenv('TRAINING_API_URL')
 
 
 # Storage settings
@@ -179,7 +183,7 @@ STORAGES = {
     }
 }
 
-AWS_ACCESS_KEY_ID = 'zl6ggTd5WUAaV2NMaGJj'
-AWS_SECRET_ACCESS_KEY = 'mtUHWqwV2GlpW8eALQ0quZEWCHkZqQlbBAXKuXus'
-AWS_S3_ENDPOINT_URL = 'http://34.101.59.56:9000'
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
 

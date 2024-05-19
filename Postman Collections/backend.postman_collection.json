@@ -446,7 +446,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -467,6 +467,11 @@
 								{
 									"key": "workspace",
 									"value": "{{workspace_name}}"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
 								}
 							]
 						}
@@ -479,7 +484,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}",
+							"raw": "{{base_url}}/profiling/barchart/?datasetname={{datasetname}}&username={{username}}&workspace={{workspace_name}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -500,6 +505,11 @@
 								{
 									"key": "workspace",
 									"value": "{{workspace_name}}"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
 								}
 							]
 						}
@@ -794,6 +804,91 @@
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "workspace",
+									"value": "{{workspace_name}}",
+									"type": "text"
+								},
+								{
+									"key": "datasetname",
+									"value": "{{datasetname}}",
+									"type": "text"
+								},
+								{
+									"key": "columns_encoding",
+									"value": "doors,persons",
+									"type": "text"
+								},
+								{
+									"key": "encoding",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "columns_ordinal_encoding",
+									"value": "buying,meant,lug_boot,safety,class",
+									"type": "text"
+								},
+								{
+									"key": "ranks_ordinal_encoding",
+									"value": "vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good",
+									"type": "text"
+								},
+								{
+									"key": "ordinal_encoding",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "{{workspace_type}}",
+									"type": "text"
+								},
+								{
+									"key": "missing",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "columns_missing",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "duplication",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "columns_duplication",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "outlier",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "ordinal",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "dict_ordinal_encoding",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
 							"raw": "http://{{base_url}}/preprocess/handle?username={{username}}&workspace={{workspace}}&datasetname={{datasetname}}&columns_encoding=doors,persons&encoding=1&columns_ordinal_encoding=buying,meant,lug_boot,safety,class&ranks_ordinal_encoding=vhigh,high,med,low,vhigh,high,med,low,small,med,big;low,med,high,unacc,acc,vgood,good&ordinal_encoding=1",
 							"protocol": "http",

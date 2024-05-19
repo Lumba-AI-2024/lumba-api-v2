@@ -206,7 +206,7 @@
 									"key": "file",
 									"description": "Uploaded CSV File",
 									"type": "file",
-									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/dataset/affairs.csv"
+									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/dataset/beauty.csv"
 								},
 								{
 									"key": "username",
@@ -1054,7 +1054,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&filename={{filename}}&type={{workspace_type}}",
+							"raw": "{{base_url}}/preprocess/boxplot?username={{username}}&workspace={{workspace_name}}&datasetname={{datasetname}}&type={{workspace_type}}",
 							"host": [
 								"{{base_url}}"
 							],
@@ -1072,13 +1072,12 @@
 									"value": "{{workspace_name}}"
 								},
 								{
-									"key": "filename",
-									"value": "{{filename}}"
+									"key": "datasetname",
+									"value": "{{datasetname}}"
 								},
 								{
 									"key": "type",
-									"value": "{{workspace_type}}",
-									"type": "text"
+									"value": "{{workspace_type}}"
 								}
 							]
 						}

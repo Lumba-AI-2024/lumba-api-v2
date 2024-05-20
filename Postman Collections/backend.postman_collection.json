@@ -206,7 +206,7 @@
 									"key": "file",
 									"description": "Uploaded CSV File",
 									"type": "file",
-									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/dataset/beauty.csv"
+									"src": "/C:/Users/Bhisma/Desktop/Skripsi/lumba-ai/dataset/hiring.csv"
 								},
 								{
 									"key": "username",
@@ -559,7 +559,7 @@
 							"formdata": [
 								{
 									"key": "modelname",
-									"value": "beauty",
+									"value": "beauty2",
 									"type": "text"
 								},
 								{
@@ -746,8 +746,8 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "modelname",
-									"value": "affairs.csv",
+									"key": "datasetname",
+									"value": "{{datasetname}}",
 									"type": "text"
 								},
 								{
@@ -758,6 +758,11 @@
 								{
 									"key": "username",
 									"value": "{{username}}",
+									"type": "text"
+								},
+								{
+									"key": "modelname",
+									"value": "beauty",
 									"type": "text"
 								}
 							]

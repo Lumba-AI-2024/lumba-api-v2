@@ -35,7 +35,7 @@ class AutoML(models.Model):
             columns = ','.join(columns.split())
 
             columns = columns.split(',')
-            preprocess = Preprocess(dataset=self.dataset, columns=columns, target=self.target)
+            preprocess = Preprocess(dataset=Dataset.objects.get(pk=self.dataset.pk), columns=columns, target_columns=self.target)
 
             # handle null, duplicate, ordinal encoding, encoding, and scaling
             preproc_kwargs = {

@@ -93,7 +93,9 @@ class MLModelDetailView(APIView):
         """
         print(request.data.dict())
         workspace = Workspace.objects.get(username=request.data['username'], name=request.data['workspace'])
+        print(request.data['datasetname'],"test")
         dataset = Dataset.objects.get(name=request.data['datasetname'], workspace=workspace, username=request.data['username'])
+        print("dataset",dataset)
         payload = {**request.data.dict(), 'dataset': dataset.pk, 'name': request.data['modelname']}
         serializer = MLModelSerializer(data=payload)
         if serializer.is_valid():

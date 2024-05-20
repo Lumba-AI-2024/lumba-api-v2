@@ -42,15 +42,15 @@ class Preprocess(DataScience):
             else:
                 self.data_duplication_handler()
 
-        if kwargs['outlier'] == '1':
-            self.data_outlier_handler()
+        # if kwargs['outlier'] == '1':
+        #     self.data_outlier_handler()
 
         if kwargs['ordinal'] == '1':
             if kwargs['dict_ordinal_encoding'] != '':
                 result_dict = json.loads(kwargs['dict_ordinal_encoding'])
                 self.data_ordinal_encoding(result_dict)
-            else:
-                self.data_ordinal_encoding()
+            # else:
+            #     self.data_ordinal_encoding()
 
         if kwargs['encoding'] == '1':
             self.data_encoding()

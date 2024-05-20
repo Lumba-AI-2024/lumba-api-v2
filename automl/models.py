@@ -45,6 +45,7 @@ class AutoML(models.Model):
                 'columns_duplication': '',
                 'ordinal': '1',
                 'dict_ordinal_encoding': '',
+                'encoding':'1',
                 'scaling': '0' if scaling != 'vanilla' else '1',
                 'scaling_type': scaling,
             }

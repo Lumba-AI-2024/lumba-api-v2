@@ -157,9 +157,12 @@ def cleaning_automl(request):
         username=request.data['username'],
         workspace_type=request.data['type']
     )
-    columns=request.data['selectedTrainingColumns']
+    columns=f"{request.data['selectedTrainingColumns']},{request.data['selectedTargetColumn']}"
     columns = columns.split(",")
-    preprocess = Preprocess(dataset=dataset, columns=columns)
+    target = request.data['selectedTargetColumn']
+    print("targetnya",target)
+    print("kolomnya",columns)
+    preprocess = Preprocess(dataset=dataset, columns=columns, target_columns=target)
     
     # preprocess
     preprocess.data_null_handler()

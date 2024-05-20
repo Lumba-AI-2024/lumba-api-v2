@@ -20,10 +20,11 @@ from dataset.serializers import DatasetSerializer
 
 class Preprocess(DataScience):
 
-    def __init__(self, dataset: Dataset, columns: list = None) -> None:
+    def __init__(self, dataset: Dataset, columns: list = None, target_columns: str = None) -> None:
         dataframe = pandas.read_csv(dataset.file)
         super().__init__(dataframe)
         self.columns = columns or []
+        self.target_columns = target_columns
         print(f"This is in Preproc -> {columns}")
         self.target = dataset
 
@@ -207,14 +208,22 @@ class Preprocess(DataScience):
 
     def data_encoding(self) -> DataFrame:
         df = self.dataframe[self.columns].copy()
+        df_feature = df.drop(columns=[self.target_columns])
+        df_target = df[self.target_columns]
+        
 
-        df = pd.get_dummies(df)
+        df_feature = pd.get_dummies(df_feature)
         label = LabelEncoder()
-        for col in df.columns:
-            if len(df[col].unique()) >= 2:
-                df[col] = label.fit_transform(df[col])
-
+        for col in df_feature.columns:
+            if len(df_feature[col].unique()) >= 2:
+                df_feature[col] = label.fit_transform(df_feature[col])
+                
+        df_target = label.fit_transform(df_target)
+        df_target = pd.DataFrame(df_target, columns=[self.target_columns])
+        print(type(df_target),"and",type(df_feature))
+        df = pd.concat([df_feature, df_target], axis=1)
         self.dataframe = df
+        print(f"This is in data_encoding -> {df}")
 
         return df
     

@@ -208,20 +208,35 @@ class Preprocess(DataScience):
 
     def data_encoding(self) -> DataFrame:
         df = self.dataframe[self.columns].copy()
-        df_feature = df.drop(columns=[self.target_columns])
-        df_target = df[self.target_columns]
+        # df_feature = df.drop(columns=[self.target_columns])
+        # df_target = df[self.target_columns]
         
 
-        df_feature = pd.get_dummies(df_feature)
+        # df_feature = pd.get_dummies(df_feature)
         label = LabelEncoder()
-        for col in df_feature.columns:
-            if len(df_feature[col].unique()) >= 2:
-                df_feature[col] = label.fit_transform(df_feature[col])
+        # for col in df_feature.columns:
+        #     if len(df_feature[col].unique()) >= 2:
+        #         df_feature[col] = label.fit_transform(df_feature[col])
                 
-        df_target = label.fit_transform(df_target)
-        df_target = pd.DataFrame(df_target, columns=[self.target_columns])
-        print(type(df_target),"and",type(df_feature))
-        df = pd.concat([df_feature, df_target], axis=1)
+        # df_target = label.fit_transform(df_target)
+        # df_target = pd.DataFrame(df_target, columns=[self.target_columns])
+        # print(type(df_target),"and",type(df_feature))
+        # df = pd.concat([df_feature, df_target], axis=1)
+        if df[self.target_columns].dtype == "object":
+            label = LabelEncoder()
+            df[self.target_columns] = label.fit_transform(df[self.target_columns])
+        for col in df.columns:
+            if df[col].dtype == "object" and col != self.target_columns and len(df[col].unique()) == 2:
+                label = LabelEncoder()
+                df[col] = label.fit_transform(df[col])
+            elif df[col].dtype == "object" and col != self.target_columns and len(df[col].unique()) > 2:
+                df = pd.get_dummies(df, columns=[col])
+        
+        for col in df.columns:
+            if col != self.target_columns and len(df[col].unique()) == 2:
+                label = LabelEncoder()
+                df[col] = label.fit_transform(df[col])
+            
         self.dataframe = df
         print(f"This is in data_encoding -> {df}")
 

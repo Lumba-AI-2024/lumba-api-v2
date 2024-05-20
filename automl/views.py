@@ -82,7 +82,8 @@ class AutoMLDetailView(APIView):
         serializer = AutoMLSerializer(data=payload)
         if serializer.is_valid():
             automl_project = serializer.save()
-            return Response(automl_project.initiate_project(), status=status.HTTP_201_CREATED)
+            automl_project.initiate_project()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):

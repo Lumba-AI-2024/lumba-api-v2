@@ -28,7 +28,6 @@ class AutoML(models.Model):
         Initiate preprocessing, and then initiate training for each preprocesses
         :return:
         """
-        models_generated = []
 
         for scaling in ('vanilla', 'normalization', 'standardization'):
             columns = f"{self.feature},{self.target}"
@@ -38,41 +37,40 @@ class AutoML(models.Model):
             preprocess = Preprocess(dataset=Dataset.objects.get(pk=self.dataset.pk), columns=columns, target_columns=self.target)
 
             # handle null, duplicate, ordinal encoding, encoding, and scaling
+            # TODO: Fix this in preproc
             preproc_kwargs = {
-                'missing': '1',
+                'missing': '0',
                 'columns_missing': '',
-                'duplication': '1',
+                'duplication': '0',
                 'columns_duplication': '',
-                'ordinal': '1',
+                'ordinal': '0',
                 'dict_ordinal_encoding': '',
-                'encoding':'1',
+                'encoding': '0',
                 'scaling': '0' if scaling != 'vanilla' else '1',
                 'scaling_type': scaling,
             }
 
             payload = preprocess.handle(**preproc_kwargs)
 
-            serializer = DatasetSerializer(data=payload)
+            serializer = DatasetSerializer(data={**payload, 'name':f"{scaling}_{self.dataset.name}"})
             if serializer.is_valid():
                 scaled_dataset = serializer.save()
-
                 for algorithm in algorithms[self.method]:
                     model_payload = {
                         'name': f"{scaling}_{algorithm}_{self.name}",
-                        'dataset': scaled_dataset,
+                        'dataset': scaled_dataset.pk,
                         'method': self.method,
                         'algorithm': algorithm,
                         'feature': self.feature,
                         'target': self.target,
-                        'autoML_project': self,
+                        'autoML_project': self.pk,
                     }
-
                     serializer = AutoMLModelSerializer(data=model_payload)
                     if serializer.is_valid():
                         model = serializer.save()
 
                         model.initiate_training()
-
-                        models_generated.append(model)
-
-        return AutoMLModelSerializer(models_generated, many=True)
+                    print(f"{model_payload['name']}")
+                    print(f"{serializer.errors}")
+            print(f"{scaling}_{self.dataset.name}")
+            print(serializer.errors)

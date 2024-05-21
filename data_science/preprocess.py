@@ -59,16 +59,10 @@ class Preprocess(DataScience):
         is_scaled = False
         if kwargs['scaling'] == '1':
             if kwargs['scaling_type'] == 'normalization':
-                scaled_X = self.data_normalization()
-                print("62",scaled_X)
+                self.data_normalization()
             else:
-                scaled_X = self.data_standardization()
-                print("65",scaled_X)
-            y_target = self.dataframe[self.target_columns]
-            is_scaled = True
+                self.data_standardization()
             
-                
-
         new_file_name = f"{filename_prefix}_{self.target.name}"
         new_file_content = self.dataframe.to_csv()
         new_file = ContentFile(new_file_content.encode('utf-8'), name=new_file_name)
@@ -90,33 +84,41 @@ class Preprocess(DataScience):
             'non_numeric': non_numeric,
         }
         
-        if is_scaled:
-            print("sini",type(scaled_X))
-            print("sini",type(y_target))
-            return payload, scaled_X, y_target
-        else:
-            print("sana",payload)
         return payload
 
     def data_standardization(self) -> DataFrame:
-        df = self.dataframe.copy()
-        # df = self.encode_categorical_columns(df)
+        df = self.dataframe[self.columns].copy()
+        features_to_scale = df.drop(columns=self.target_columns)
+        
         scaler = StandardScaler()
-        scaled_data = scaler.fit_transform(df.drop(columns=[self.target_columns]))
-        scaled_df = pd.DataFrame(scaled_data, columns=df.drop(columns=[self.target_columns]).columns)
-        scaled_df[self.target_columns] = df[self.target_columns].values
+        
+        scaled_features = scaler.fit_transform(features_to_scale)
+        
+        scaled_df = pd.DataFrame(scaled_features, columns=features_to_scale.columns)
+        
+        scaled_df[self.target_columns] = self.dataframe[self.target_columns].values
+        
         self.dataframe = scaled_df
-        return scaled_df.drop(columns=[self.target_columns])
+        
+        return self.dataframe
+
 
     def data_normalization(self) -> DataFrame:
-        df = self.dataframe.copy()
-        # df = self.encode_categorical_columns(df)
+        df = self.dataframe[self.columns].copy()
+        features_to_scale = df.drop(columns=self.target_columns)
+        
         scaler = MinMaxScaler()
-        scaled_data = scaler.fit_transform(df.drop(columns=[self.target_columns]))
-        scaled_df = pd.DataFrame(scaled_data, columns=df.drop(columns=[self.target_columns]).columns)
-        scaled_df[self.target_columns] = df[self.target_columns].values
+        
+        scaled_features = scaler.fit_transform(features_to_scale)
+        
+        scaled_df = pd.DataFrame(scaled_features, columns=features_to_scale.columns)
+        
+        scaled_df[self.target_columns] = self.dataframe[self.target_columns].values
+        
         self.dataframe = scaled_df
-        return scaled_df.drop(columns=[self.target_columns])
+        
+        return self.dataframe
+
 
     def data_null_check(self) -> Dict[str, int]:
         df = self.dataframe[self.columns].copy()

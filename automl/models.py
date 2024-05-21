@@ -8,7 +8,7 @@ from ml_model.serializers import MLModelSerializer, AutoMLModelSerializer
 # TODO: this should be a class (or classes) of enums
 algorithms = {
     'REGRESSION': ('LINEAR', 'DECISION_TREE', 'RANDOM_FOREST', 'NEURAL_NETWORK', 'XG_BOOST'),
-    'CLASSIFICATION': ('DECISION_TREE', 'RANDOM_FOREST', 'NEURAL_NETWORK', 'XG_BOOST'),
+    'CLASSIFICATION': ('DECISION_TREE', 'RANDOM_FOREST', 'XG_BOOST', 'NEURAL_NETWORK'),
     'CLUSTERING': ('KMEANS', 'DBSCAN')
 }
 
@@ -48,11 +48,7 @@ class AutoML(models.Model):
             }
             result = preprocess.handle(**preproc_kwargs)
 
-            if isinstance(result, tuple):
-                payload, scaled_X, y_target = result
-                print(type(scaled_X))     
-            else:
-                payload = result
+            payload = result
                 
 
             serializer = DatasetSerializer(data={**payload, 'name':f"{scaling}_{self.dataset.name}"})
@@ -71,10 +67,7 @@ class AutoML(models.Model):
                     serializer = AutoMLModelSerializer(data=model_payload)
                     if serializer.is_valid():
                         model = serializer.save()
-                        if scaling != 'vanilla':
-                            model.initiate_training(scaled_X, y_target)
-                        else:
-                            model.initiate_training()
+                        model.initiate_training()
                     print(f"{model_payload['name']}")
                     print(f"{serializer.errors}")
             print(f"{scaling}_{self.dataset.name}")

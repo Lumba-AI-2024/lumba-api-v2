@@ -53,8 +53,10 @@ class AutoML(models.Model):
 
             if isinstance(result, tuple):
                 payload, scaled_X, y_target = result
+                print(type(scaled_X))     
             else:
                 payload = result
+                
 
             serializer = DatasetSerializer(data={**payload, 'name':f"{scaling}_{self.dataset.name}"})
             if serializer.is_valid():
@@ -72,8 +74,10 @@ class AutoML(models.Model):
                     serializer = AutoMLModelSerializer(data=model_payload)
                     if serializer.is_valid():
                         model = serializer.save()
-
-                        model.initiate_training(scaled_X, y_target if scaling != 'vanilla' else None)
+                        if scaling != 'vanilla':
+                            model.initiate_training(scaled_X, y_target)
+                        else:
+                            model.initiate_training()
                     print(f"{model_payload['name']}")
                     print(f"{serializer.errors}")
             print(f"{scaling}_{self.dataset.name}")

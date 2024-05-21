@@ -56,12 +56,17 @@ class Preprocess(DataScience):
         if kwargs['encoding'] == '1':
             self.data_encoding()
 
+        is_scaled = False
         if kwargs['scaling'] == '1':
             if kwargs['scaling_type'] == 'normalization':
                 scaled_X = self.data_normalization()
+                print("62",scaled_X)
             else:
                 scaled_X = self.data_standardization()
+                print("65",scaled_X)
             y_target = self.dataframe[self.target_columns]
+            is_scaled = True
+            
                 
 
         new_file_name = f"{filename_prefix}_{self.target.name}"
@@ -85,27 +90,33 @@ class Preprocess(DataScience):
             'non_numeric': non_numeric,
         }
         
-        if scaled_X is not None and y_target is not None:
+        if is_scaled:
+            print("sini",type(scaled_X))
+            print("sini",type(y_target))
             return payload, scaled_X, y_target
+        else:
+            print("sana",payload)
         return payload
 
     def data_standardization(self) -> DataFrame:
         df = self.dataframe.copy()
-
-        # use standard scaler from sklearn and just use .fit
+        # df = self.encode_categorical_columns(df)
         scaler = StandardScaler()
-        scaler.fit(df)
-
-        return df
+        scaled_data = scaler.fit_transform(df.drop(columns=[self.target_columns]))
+        scaled_df = pd.DataFrame(scaled_data, columns=df.drop(columns=[self.target_columns]).columns)
+        scaled_df[self.target_columns] = df[self.target_columns].values
+        self.dataframe = scaled_df
+        return scaled_df.drop(columns=[self.target_columns])
 
     def data_normalization(self) -> DataFrame:
         df = self.dataframe.copy()
-
-        # use min-max scaler from sklearn and just use .fit
+        # df = self.encode_categorical_columns(df)
         scaler = MinMaxScaler()
-        scaler.fit(df)
-
-        return df
+        scaled_data = scaler.fit_transform(df.drop(columns=[self.target_columns]))
+        scaled_df = pd.DataFrame(scaled_data, columns=df.drop(columns=[self.target_columns]).columns)
+        scaled_df[self.target_columns] = df[self.target_columns].values
+        self.dataframe = scaled_df
+        return scaled_df.drop(columns=[self.target_columns])
 
     def data_null_check(self) -> Dict[str, int]:
         df = self.dataframe[self.columns].copy()

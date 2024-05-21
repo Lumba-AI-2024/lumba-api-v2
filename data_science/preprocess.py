@@ -58,9 +58,11 @@ class Preprocess(DataScience):
 
         if kwargs['scaling'] == '1':
             if kwargs['scaling_type'] == 'normalization':
-                self.data_normalization()
+                scaled_X = self.data_normalization()
             else:
-                self.data_standardization()
+                scaled_X = self.data_standardization()
+            y_target = self.dataframe[self.target_columns]
+                
 
         new_file_name = f"{filename_prefix}_{self.target.name}"
         new_file_content = self.dataframe.to_csv()
@@ -82,7 +84,9 @@ class Preprocess(DataScience):
             'numeric': numeric,
             'non_numeric': non_numeric,
         }
-
+        
+        if scaled_X is not None and y_target is not None:
+            return payload, scaled_X, y_target
         return payload
 
     def data_standardization(self) -> DataFrame:
@@ -92,8 +96,6 @@ class Preprocess(DataScience):
         scaler = StandardScaler()
         scaler.fit(df)
 
-        self.dataframe = df
-
         return df
 
     def data_normalization(self) -> DataFrame:
@@ -102,8 +104,6 @@ class Preprocess(DataScience):
         # use min-max scaler from sklearn and just use .fit
         scaler = MinMaxScaler()
         scaler.fit(df)
-
-        self.dataframe = df
 
         return df
 

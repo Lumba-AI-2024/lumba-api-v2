@@ -43,6 +43,9 @@ class MLModel(models.Model):
             'metrics': self.metrics,
             'feature': self.feature,
             'target': self.target,
+            'X_scaled':self.dataset.scaled_X,
+            'y_target':self.dataset.y_target,
+            'scaled':self.dataset.scaled
         }
 
         requests.post(settings.TRAINING_API_URL, data=payload)

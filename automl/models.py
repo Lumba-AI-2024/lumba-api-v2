@@ -39,18 +39,22 @@ class AutoML(models.Model):
             # handle null, duplicate, ordinal encoding, encoding, and scaling
             # TODO: Fix this in preproc
             preproc_kwargs = {
-                'missing': '0',
+                'missing': '1',
                 'columns_missing': '',
-                'duplication': '0',
+                'duplication': '1',
                 'columns_duplication': '',
-                'ordinal': '0',
+                'ordinal': '1',
                 'dict_ordinal_encoding': '',
-                'encoding': '0',
-                'scaling': '0' if scaling != 'vanilla' else '1',
+                'encoding': '1',
+                'scaling': '1' if scaling != 'vanilla' else '0',
                 'scaling_type': scaling,
             }
+            result = preprocess.handle(**preproc_kwargs)
 
-            payload = preprocess.handle(**preproc_kwargs)
+            if isinstance(result, tuple):
+                payload, scaled_X, y_target = result
+            else:
+                payload = result
 
             serializer = DatasetSerializer(data={**payload, 'name':f"{scaling}_{self.dataset.name}"})
             if serializer.is_valid():
@@ -69,7 +73,7 @@ class AutoML(models.Model):
                     if serializer.is_valid():
                         model = serializer.save()
 
-                        model.initiate_training()
+                        model.initiate_training(scaled_X, y_target if scaling != 'vanilla' else None)
                     print(f"{model_payload['name']}")
                     print(f"{serializer.errors}")
             print(f"{scaling}_{self.dataset.name}")

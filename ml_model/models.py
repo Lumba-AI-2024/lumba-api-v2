@@ -30,27 +30,47 @@ class MLModel(models.Model):
     class Meta:
         unique_together = ('dataset', 'name',)
 
-    def initiate_training(self):
-        payload = {
-            'modelname': self.name,
-            'datasetname': self.dataset.name,
-            'workspace': self.dataset.workspace.name,
-            'type': self.dataset.workspace.type,
-            'username': self.dataset.username,
-            'dataset_link': self.dataset.file.url,
-            'method': self.method,
-            'algorithm': self.algorithm,
-            'metrics': self.metrics,
-            'feature': self.feature,
-            'target': self.target,
-            'X_scaled':self.dataset.scaled_X,
-            'y_target':self.dataset.y_target,
-            'scaled':self.dataset.scaled
-        }
+    def initiate_training(self, scaled_X=None, y_target=None):
+        if scaled_X is not None and y_target is not None:
+            # Convert scaled_X and y_target to JSON format
+            scaled_X_json = scaled_X.to_json(orient='split')
+            y_target_json = y_target.to_json(orient='split')
+            
+            payload = {
+                'modelname': self.name,
+                'datasetname': self.dataset.name,
+                'workspace': self.dataset.workspace.name,
+                'type': self.dataset.workspace.type,
+                'username': self.dataset.username,
+                'method': self.method,
+                'algorithm': self.algorithm,
+                'metrics': self.metrics,
+                'feature': self.feature,
+                'target': self.target,
+                'scaled_X': scaled_X_json,
+                'y_target': y_target_json,
+            }
 
-        requests.post(settings.TRAINING_API_URL, data=payload)
+            requests.post(settings.TRAINING_API_URL, json=payload)
+        else:
+            payload = {
+                'modelname': self.name,
+                'datasetname': self.dataset.name,
+                'workspace': self.dataset.workspace.name,
+                'type': self.dataset.workspace.type,
+                'username': self.dataset.username,
+                'dataset_link': self.dataset.file.url,
+                'method': self.method,
+                'algorithm': self.algorithm,
+                'metrics': self.metrics,
+                'feature': self.feature,
+                'target': self.target,
+            }
+
+            requests.post(settings.TRAINING_API_URL, data=payload)
 
         return payload
+
 
 
 class AutoMLModel(MLModel):

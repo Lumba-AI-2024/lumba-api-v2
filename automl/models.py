@@ -46,12 +46,12 @@ class AutoML(models.Model):
                 'scaling': '1' if scaling != 'vanilla' else '0',
                 'scaling_type': scaling,
             }
-            result = preprocess.handle(**preproc_kwargs)
+            result = preprocess.handle(**preproc_kwargs, filename_prefix=scaling)
 
             payload = result
                 
 
-            serializer = DatasetSerializer(data={**payload, 'name':f"{scaling}_{self.dataset.name}"})
+            serializer = DatasetSerializer(data={**payload})
             if serializer.is_valid():
                 scaled_dataset = serializer.save()
                 for algorithm in algorithms[self.method]:

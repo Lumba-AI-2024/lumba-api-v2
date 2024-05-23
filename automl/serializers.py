@@ -5,12 +5,12 @@ from ml_model.serializers import AutoMLModelSerializer
 
 
 class AutoMLSerializer(serializers.ModelSerializer):
-    models = AutoMLModelSerializer(
+    automlmodels = AutoMLModelSerializer(
         many=True,
         read_only=True,
     )
 
     class Meta:
         model = AutoML
-        fields = ('name', 'dataset', 'method', 'feature', 'target', 'created_time', 'updated_time', 'models', 'ordinal', 'ordinal_dict')
+        fields = ('name', 'dataset', 'method', 'feature', 'target', 'created_time', 'updated_time', 'models', 'ordinal', 'ordinal_dict', 'automlmodels')
 

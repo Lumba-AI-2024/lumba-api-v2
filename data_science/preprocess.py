@@ -83,6 +83,8 @@ class Preprocess(DataScience):
             'numeric': numeric,
             'non_numeric': non_numeric,
         }
+
+        print(payload)
         
         return payload
 

@@ -26,6 +26,7 @@ class MLModel(models.Model):
     status = models.CharField(max_length=100, default="accepted")  # TODO: change to enums
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+    shap_values = models.TextField(blank=True)
 
     class Meta:
         unique_together = ('dataset', 'name',)

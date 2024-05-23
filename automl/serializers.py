@@ -12,5 +12,5 @@ class AutoMLSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AutoML
-        fields = ('name', 'dataset', 'method', 'feature', 'target', 'created_time', 'updated_time', 'automlmodels')
+        fields = ('name', 'dataset', 'method', 'feature', 'target', 'created_time', 'updated_time', 'models', 'ordinal', 'ordinal_dict', 'automlmodels')
 

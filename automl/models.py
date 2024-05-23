@@ -22,6 +22,8 @@ class AutoML(models.Model):
     target = models.TextField(blank=True)
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
+    ordinal = models.TextField(null=True, blank=True)
+    ordinal_dict = models.TextField(null=True, blank=True)
 
     def initiate_project(self):
         """
@@ -40,8 +42,8 @@ class AutoML(models.Model):
                 'columns_missing': '',
                 'duplication': '1',
                 'columns_duplication': '',
-                'ordinal': '1',
-                'dict_ordinal_encoding': '',
+                'ordinal': self.ordinal,
+                'dict_ordinal_encoding': self.ordinal_dict,
                 'encoding': '1',
                 'scaling': '1' if scaling != 'vanilla' else '0',
                 'scaling_type': scaling,

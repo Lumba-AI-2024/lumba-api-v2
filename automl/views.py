@@ -73,6 +73,8 @@ class AutoMLDetailView(APIView):
         method:
         feature:
         target:
+        ordinal:
+        ordinal_dict:
         :return:
         """
         workspace = Workspace.objects.get(username=request.data['username'], name=request.data['workspace'])
@@ -88,10 +90,10 @@ class AutoMLDetailView(APIView):
 
     def delete(self, request):
         automl_project = get_automl(
-            automlname=request.query_params['automlname'],
-            datasetname=request.query_params['datasetname'],
-            workspace=request.query_params['workspace'],
-            username=request.query_params['username']
+            automlname=request.data['automlname'],
+            datasetname=request.data['datasetname'],
+            workspace=request.data['workspace'],
+            username=request.data['username']
         )
         automl_project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

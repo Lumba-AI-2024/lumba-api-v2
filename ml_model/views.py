@@ -32,6 +32,24 @@ class MLModelListView(APIView):
         mlmodels = MLModel.objects.filter(dataset__in=datasets)
         serializer = MLModelSerializer(mlmodels, many=True)
         return Response(serializer.data)
+    
+class AutoMLModelListView(APIView):
+    def get(self, request):
+        """
+        :param request: {
+        'params': {
+            'username': username,
+            'workspace': workspace
+            }
+        }
+        """
+        workspace = Workspace.objects.get(name=request.query_params['workspace'], username=request.query_params['username'])
+        datasets = Dataset.objects.filter(workspace=workspace)
+        mlmodels = MLModel.objects.filter(dataset__in=datasets)
+        automlmodels = [ml for ml in mlmodels if hasattr(ml, 'automlmodel')]
+        print("ni",automlmodels)
+        serializer = MLModelSerializer(automlmodels, many=True)
+        return Response(serializer.data)
 
 
 def get_model(modelname, datasetname, workspace, username):

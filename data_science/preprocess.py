@@ -89,7 +89,7 @@ class Preprocess(DataScience):
         return payload
 
     def data_standardization(self) -> DataFrame:
-        df = self.dataframe[self.columns].copy()
+        df = self.dataframe.copy()
         features_to_scale = df.drop(columns=self.target_columns)
         
         scaler = StandardScaler()
@@ -106,7 +106,7 @@ class Preprocess(DataScience):
 
 
     def data_normalization(self) -> DataFrame:
-        df = self.dataframe[self.columns].copy()
+        df = self.dataframe.copy()
         features_to_scale = df.drop(columns=self.target_columns)
         
         scaler = MinMaxScaler()
@@ -237,6 +237,10 @@ class Preprocess(DataScience):
         # df_target = pd.DataFrame(df_target, columns=[self.target_columns])
         # print(type(df_target),"and",type(df_feature))
         # df = pd.concat([df_feature, df_target], axis=1)
+        for col in df:
+            if len(df[col].unique()) == 1:
+                df.drop(col, axis=1, inplace=True)
+                
         if df[self.target_columns].dtype == "object":
             label = LabelEncoder()
             df[self.target_columns] = label.fit_transform(df[self.target_columns])

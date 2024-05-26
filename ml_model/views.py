@@ -132,6 +132,19 @@ class MLModelDetailView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class MLModelRetrainView(APIView):
+    def post(self, request):
+        model = get_model(
+            request.query_params['modelname'],
+            request.query_params['datasetname'],
+            request.query_params['workspace'],
+            request.query_params['username']
+        )
+
+        model.initiate_training()
+
+        return Response(status=status.HTTP_200_OK)
+
 @api_view()
 def model_do_predict(request):
     """

@@ -25,7 +25,10 @@ def get_automl(automlname, datasetname, workspace, username):
     try:
         _workspace = Workspace.objects.get(name=workspace, username=username)
         dataset = Dataset.objects.get(workspace=_workspace, username=username, name=datasetname)
-        return AutoML.objects.get(dataset=dataset, name=automlname)
+        try:
+            return AutoML.objects.get(dataset=dataset, name=automlname)
+        except AutoML.MultipleObjectsReturned:
+            return AutoML.objects.filter(dataset=dataset, name=automlname)
     except (Workspace.DoesNotExist, AutoML.DoesNotExist):
         raise Http404
 
@@ -95,3 +98,17 @@ class AutoMLDetailView(APIView):
         )
         automl_project.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class AutoMLRetrainView(APIView):
+    def post(self, request):
+        automl_project = get_automl(
+            automlname=request.query_params['automlname'],
+            datasetname=request.query_params['datasetname'],
+            workspace=request.query_params['workspace'],
+            username=request.query_params['username']
+        )
+
+        automl_project.retrain_all()
+
+        return Response(status=status.HTTP_200_OK)
+

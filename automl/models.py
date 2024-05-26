@@ -72,3 +72,8 @@ class AutoML(models.Model):
                     print(f"{serializer.errors}")
             print(f"{scaling}_{self.dataset.name}")
             print(serializer.errors)
+
+    def retrain_all(self):
+
+        for model in self.automlmodels.all():
+            model.initiate_training()

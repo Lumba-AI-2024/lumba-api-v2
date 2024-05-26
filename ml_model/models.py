@@ -3,6 +3,7 @@ from django.db import models
 
 from dataset.models import Dataset
 from lumba_api_v2 import settings
+from jsonfield import JSONField
 
 
 def _upload_location(instance, datasetname):
@@ -20,7 +21,7 @@ class MLModel(models.Model):
     method = models.CharField(max_length=100, default="-")  # TODO: change to enums
     algorithm = models.CharField(max_length=100, default="-")  # TODO: change to enums
     metrics = models.CharField(max_length=100, default="-")
-    score = models.FloatField(default=0)
+    score = JSONField(default=dict)
     feature = models.TextField(blank=True)
     target = models.TextField(blank=True)
     status = models.CharField(max_length=100, default="accepted")  # TODO: change to enums

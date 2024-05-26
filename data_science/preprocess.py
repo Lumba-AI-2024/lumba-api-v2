@@ -89,7 +89,7 @@ class Preprocess(DataScience):
         return payload
 
     def data_standardization(self) -> DataFrame:
-        df = self.dataframe[self.columns].copy()
+        df = self.dataframe.copy()
         features_to_scale = df.drop(columns=self.target_columns)
         
         scaler = StandardScaler()
@@ -106,7 +106,7 @@ class Preprocess(DataScience):
 
 
     def data_normalization(self) -> DataFrame:
-        df = self.dataframe[self.columns].copy()
+        df = self.dataframe.copy()
         features_to_scale = df.drop(columns=self.target_columns)
         
         scaler = MinMaxScaler()

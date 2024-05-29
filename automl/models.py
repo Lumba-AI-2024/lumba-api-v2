@@ -32,7 +32,12 @@ class AutoML(models.Model):
         """
 
         for scaling in ('vanilla', 'normalization', 'standardization'):
-            columns = self.feature.split(',') + self.target.split(',')
+            if self.target != '':
+                columns = self.feature.split(',') + self.target.split(',')
+            else:
+                columns = self.feature.split(',')
+            
+            print(columns)
             preprocess = Preprocess(dataset=Dataset.objects.get(pk=self.dataset.pk), columns=columns, target_columns=self.target)
 
             # handle null, duplicate, ordinal encoding, encoding, and scaling

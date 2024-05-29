@@ -155,8 +155,10 @@ def cleaning_automl(request):
         username=request.data['username'],
         workspace_type=request.data['type']
     )
-    columns=f"{request.data['selectedTrainingColumns']},{request.data['selectedTargetColumn']}"
-    columns = columns.split(",")
+    if request.data['selectedTargetColumn'] != '':
+        columns=request.data['selectedTrainingColumns'].split(',') + request.data['selectedTargetColumn'].split(',')
+    else:
+        columns=request.data['selectedTrainingColumns'].split(',')
     target = request.data['selectedTargetColumn']
     print("targetnya",target)
     print("kolomnya",columns)

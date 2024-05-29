@@ -90,7 +90,10 @@ class Preprocess(DataScience):
 
     def data_standardization(self) -> DataFrame:
         df = self.dataframe.copy()
-        features_to_scale = df.drop(columns=self.target_columns)
+        if self.target_columns != '':
+            features_to_scale = df.drop(columns=self.target_columns)
+        else:
+            features_to_scale = df
         
         scaler = StandardScaler()
         
@@ -98,7 +101,8 @@ class Preprocess(DataScience):
         
         scaled_df = pd.DataFrame(scaled_features, columns=features_to_scale.columns)
         
-        scaled_df[self.target_columns] = self.dataframe[self.target_columns].values
+        if self.target_columns != '':
+            scaled_df[self.target_columns] = self.dataframe[self.target_columns].values
         
         self.dataframe = scaled_df
         
@@ -107,7 +111,10 @@ class Preprocess(DataScience):
 
     def data_normalization(self) -> DataFrame:
         df = self.dataframe.copy()
-        features_to_scale = df.drop(columns=self.target_columns)
+        if self.target_columns != '':
+            features_to_scale = df.drop(columns=self.target_columns)
+        else:
+            features_to_scale = df
         
         scaler = MinMaxScaler()
         
@@ -115,7 +122,8 @@ class Preprocess(DataScience):
         
         scaled_df = pd.DataFrame(scaled_features, columns=features_to_scale.columns)
         
-        scaled_df[self.target_columns] = self.dataframe[self.target_columns].values
+        if self.target_columns != '':
+            scaled_df[self.target_columns] = self.dataframe[self.target_columns].values
         
         self.dataframe = scaled_df
         
@@ -240,10 +248,10 @@ class Preprocess(DataScience):
         for col in df:
             if len(df[col].unique()) == 1:
                 df.drop(col, axis=1, inplace=True)
-                
-        if df[self.target_columns].dtype == "object":
-            label = LabelEncoder()
-            df[self.target_columns] = label.fit_transform(df[self.target_columns])
+        if self.target_columns != '':
+            if df[self.target_columns].dtype == "object" :
+                label = LabelEncoder()
+                df[self.target_columns] = label.fit_transform(df[self.target_columns])
         for col in df.columns:
             if df[col].dtype == "object" and col != self.target_columns and len(df[col].unique()) == 2:
                 label = LabelEncoder()

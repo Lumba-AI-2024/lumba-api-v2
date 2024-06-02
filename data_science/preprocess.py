@@ -228,7 +228,9 @@ class Preprocess(DataScience):
         self.dataframe = df
 
         return df
-
+    # total row of dataframe
+    def data_row(self) -> int:
+        return len(self.dataframe)
     def data_encoding(self) -> DataFrame:
         df = self.dataframe[self.columns].copy()
         # df_feature = df.drop(columns=[self.target_columns])

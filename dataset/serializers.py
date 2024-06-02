@@ -7,4 +7,4 @@ class DatasetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dataset
         fields = (
-            'file', 'name', 'username', 'numeric', 'non_numeric', 'workspace', 'size', 'created_time', 'updated_time')
+            'file', 'name', 'username', 'numeric', 'non_numeric', 'workspace', 'size', 'created_time', 'updated_time','row')

@@ -187,7 +187,9 @@ def cleaning_automl(request):
     #         preprocess.data_encoding()
 
     preprocess.data_encoding()
-
+    
+    row = preprocess.data_row()
+    print(row)
     new_file_name = generate_file_name_automl(file_name)
     new_file_content = preprocess.dataframe.to_csv()
     new_file = ContentFile(new_file_content.encode('utf-8'), name=new_file_name)
@@ -208,6 +210,7 @@ def cleaning_automl(request):
         'workspace': workspace_pk,
         'numeric': numeric,
         'non_numeric': non_numeric,
+        'row' : row
     }
     serializer = DatasetSerializer(data=payload)
     if serializer.is_valid():

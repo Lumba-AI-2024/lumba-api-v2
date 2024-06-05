@@ -215,7 +215,7 @@ def cleaning_automl(request):
     serializer = DatasetSerializer(data=payload)
     if serializer.is_valid():
         serializer.save()
-        return Response(preprocess.get_preview(1, 10), status=status.HTTP_200_OK)
+        return Response({'preview': preprocess.get_preview(1, 10), 'row': row}, status=status.HTTP_200_OK)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

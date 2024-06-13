@@ -181,10 +181,38 @@ def model_do_predict(request):
     feature_dict = json.loads(feature)
     print("feature_dict",feature_dict)
     y_test = pd.DataFrame([feature_dict])
+    for col in y_test.columns:
+        inferred_type = infer_dtype(y_test[col].iloc[0])
+        if inferred_type == 'int':
+            y_test[col] = y_test[col].astype(int)
+        elif inferred_type == 'float':
+            y_test[col] = y_test[col].astype(float)
+        else:
+            y_test[col] = y_test[col].astype(str)
+
     print("y_test",y_test)
     print(y_test.info())
-    modelfile = get_model(model_name, workspace, username, dataset)
+    # print(self.scaler.transform(y_test))
+    modelfile = get_model(model_name, dataset, workspace, username)
+    print("modelfile",modelfile.name)
+    print("masuk")
+    scaler = joblib.load(modelfile.scaler.file)
+    print("scaled", scaler.transform(y_test))
     model = joblib.load(modelfile.model_file.file)
-    predict = model.predict(np.array([feature]).reshape(-1, 1))
+    predict = model.predict(y_test)
 
     return Response({'result': predict[0][0]}, status=status.HTTP_200_OK)
+
+def infer_dtype(value):
+    try:
+        # Coba konversi ke integer
+        int_value = int(value)
+        return 'int'
+    except ValueError:
+        try:
+            # Coba konversi ke float
+            float_value = float(value)
+            return 'float'
+        except ValueError:
+            # Jika gagal, kembalikan sebagai string
+            return 'str'

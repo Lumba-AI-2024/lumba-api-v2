@@ -60,7 +60,7 @@ class Preprocess(DataScience):
                 scaler = self.data_standardization()
             
             # Save scaler to pkl file
-            scaler_filename = f"{filename_prefix}_scaler.pkl"
+            scaler_filename = f"{filename_prefix}_{self.target.name}_scaler.pkl"
             joblib.dump(scaler, scaler_filename)
             with open(scaler_filename, 'rb') as f:
                 scaler_file = ContentFile(f.read(), name=scaler_filename)

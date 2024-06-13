@@ -77,7 +77,7 @@ class AutoML(models.Model):
                         'feature': ','.join(columns_from_file),
                         'target': self.target,
                         'autoML_project': self.pk,
-                        'scaler_file': result['scaler_file'] if scaling != 'vanilla' else None,
+                        'scaler': result['scaler_file'] if scaling != 'vanilla' else None,
                     }
                     serializer = AutoMLModelSerializer(data=model_payload)
                     if serializer.is_valid():

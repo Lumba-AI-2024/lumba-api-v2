@@ -182,6 +182,7 @@ def model_do_predict(request):
     print("feature_dict",feature_dict)
     y_test = pd.DataFrame([feature_dict])
     print("y_test",y_test)
+    print(y_test.info())
     modelfile = get_model(model_name, workspace, username, dataset)
     model = joblib.load(modelfile.model_file.file)
     predict = model.predict(np.array([feature]).reshape(-1, 1))

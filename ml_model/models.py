@@ -29,7 +29,7 @@ class MLModel(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
     shap_values = JSONField(default=dict)
-    scaler = models.FileField(upload_to=_upload_location, blank=True)
+    scaler = models.FileField(upload_to=_upload_location, blank=True, null=True)
     
 
     class Meta:

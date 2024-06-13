@@ -13,6 +13,8 @@ from ml_model.models import MLModel
 from ml_model.serializers import MLModelSerializer
 from lumba_api_v2 import settings
 from workspace.models import Workspace
+import json
+import pandas as pd
 
 # Create your views here.
 training_service_url = settings.TRAINING_API_URL
@@ -130,6 +132,17 @@ class MLModelDetailView(APIView):
         )
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class MLModelDownloadView(APIView):
+    def get(self, request):
+        model = get_model(
+            request.query_params['modelname'],
+            request.query_params['datasetname'],
+            request.query_params['workspace'],
+            request.query_params['username']
+        )
+
+        return Response({'file': model.model_file.url}, status=status.HTTP_200_OK)
 
 
 class MLModelRetrainView(APIView):
@@ -153,14 +166,23 @@ def model_do_predict(request):
     :return:
     """
     try:
-        model_name = request.query_params['modelname']
-        feature = int(request.query_params['feature'])
+        print(request.query_params)
+        model_name = request.query_params['name']
+        feature = request.query_params['feature']
         username = request.query_params['username']
         workspace = request.query_params['workspace']
+        dataset = request.query_params['datasetname']
     except:
+        print("error")
         return Response({'message': "input error"}, status=status.HTTP_400_BAD_REQUEST)
-
-    modelfile = get_model(model_name, workspace, username)
+    
+    print("feature",type(feature))
+    print("feature",feature)
+    feature_dict = json.loads(feature)
+    print("feature_dict",feature_dict)
+    y_test = pd.DataFrame([feature_dict])
+    print("y_test",y_test)
+    modelfile = get_model(model_name, workspace, username, dataset)
     model = joblib.load(modelfile.model_file.file)
     predict = model.predict(np.array([feature]).reshape(-1, 1))
 

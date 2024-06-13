@@ -4,6 +4,8 @@ from data_science.preprocess import Preprocess
 from dataset.models import Dataset
 from dataset.serializers import DatasetSerializer
 from ml_model.serializers import MLModelSerializer, AutoMLModelSerializer
+import pandas as pd
+from io import StringIO
 
 # TODO: this should be a class (or classes) of enums
 algorithms = {
@@ -11,8 +13,6 @@ algorithms = {
     'CLASSIFICATION': ('DECISION_TREE', 'RANDOM_FOREST', 'XG_BOOST', 'NEURAL_NETWORK'),
     'CLUSTERING': ('KMEANS', 'DBSCAN')
 }
-
-
 # Create your models here.
 class AutoML(models.Model):
     name = models.CharField(max_length=100)
@@ -54,10 +54,16 @@ class AutoML(models.Model):
                 'scaling_type': scaling,
             }
             result = preprocess.handle(**preproc_kwargs, filename_prefix=scaling)
+            print(result['scaler_file'])
+            # Extract columns from the file in result['file']
+            print("result ===", result)
+            file_content = result['file'].read().decode('utf-8')
+            df = pd.read_csv(StringIO(file_content))
+            columns_from_file = df.drop(columns = ['Unnamed: 0', self.target]).columns.tolist()
+            print("Columns in file:", columns_from_file)
 
             payload = result
                 
-
             serializer = DatasetSerializer(data={**payload})
             if serializer.is_valid():
                 scaled_dataset = serializer.save()
@@ -65,11 +71,13 @@ class AutoML(models.Model):
                     model_payload = {
                         'name': f"{scaling}_{algorithm}_{self.name}",
                         'dataset': scaled_dataset.pk,
+                        'datasetname': scaled_dataset.name,
                         'method': self.method,
                         'algorithm': algorithm,
-                        'feature': self.feature,
+                        'feature': ','.join(columns_from_file),
                         'target': self.target,
                         'autoML_project': self.pk,
+                        'scaler_file': result['scaler_file'] if scaling != 'vanilla' else None,
                     }
                     serializer = AutoMLModelSerializer(data=model_payload)
                     if serializer.is_valid():

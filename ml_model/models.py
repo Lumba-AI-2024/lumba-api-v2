@@ -18,6 +18,7 @@ class MLModel(models.Model):
     name = models.CharField(max_length=100, default='')
     model_file = models.FileField(upload_to=_upload_location, blank=True)
     dataset = models.ForeignKey(Dataset, related_name='models', on_delete=models.CASCADE)
+    datasetname = models.CharField(max_length=100, default='-')
     method = models.CharField(max_length=100, default="-")  # TODO: change to enums
     algorithm = models.CharField(max_length=100, default="-")  # TODO: change to enums
     metrics = models.CharField(max_length=100, default="-")
@@ -28,6 +29,8 @@ class MLModel(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
     updated_time = models.DateTimeField(auto_now=True)
     shap_values = JSONField(default=dict)
+    scaler = models.FileField(upload_to=_upload_location, blank=True)
+    
 
     class Meta:
         unique_together = ('dataset', 'name',)

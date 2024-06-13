@@ -1,27 +1,22 @@
 import json
-
-import pandas
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Tuple
-
 from django.core.files.base import ContentFile
 from pandas.core.frame import DataFrame
 from pandas.core.series import Series
 from rest_framework import status
 from rest_framework.response import Response
-
 from data_science.core import DataScience
 from sklearn.preprocessing import LabelEncoder, StandardScaler, MinMaxScaler
-
 from dataset.models import Dataset
 from dataset.serializers import DatasetSerializer
-
+import joblib
 
 class Preprocess(DataScience):
 
     def __init__(self, dataset: Dataset, columns: list = None, target_columns: str = None) -> None:
-        dataframe = pandas.read_csv(dataset.file)
+        dataframe = pd.read_csv(dataset.file)
         super().__init__(dataframe)
         self.columns = columns or []
         self.target_columns = target_columns
@@ -58,11 +53,18 @@ class Preprocess(DataScience):
 
         is_scaled = False
         if kwargs['scaling'] == '1':
+            is_scaled = True
             if kwargs['scaling_type'] == 'normalization':
-                self.data_normalization()
+                scaler = self.data_normalization()
             else:
-                self.data_standardization()
+                scaler = self.data_standardization()
             
+            # Save scaler to pkl file
+            scaler_filename = f"{filename_prefix}_scaler.pkl"
+            joblib.dump(scaler, scaler_filename)
+            with open(scaler_filename, 'rb') as f:
+                scaler_file = ContentFile(f.read(), name=scaler_filename)
+
         new_file_name = f"{filename_prefix}_{self.target.name}"
         new_file_content = self.dataframe.to_csv()
         new_file = ContentFile(new_file_content.encode('utf-8'), name=new_file_name)
@@ -82,13 +84,14 @@ class Preprocess(DataScience):
             'workspace': workspace,
             'numeric': numeric,
             'non_numeric': non_numeric,
+            'scaler_file': scaler_file if is_scaled else None
         }
 
         print(payload)
         
         return payload
 
-    def data_standardization(self) -> DataFrame:
+    def data_standardization(self) -> StandardScaler:
         df = self.dataframe.copy()
         if self.target_columns != '':
             features_to_scale = df.drop(columns=self.target_columns)
@@ -96,9 +99,7 @@ class Preprocess(DataScience):
             features_to_scale = df
         
         scaler = StandardScaler()
-        
         scaled_features = scaler.fit_transform(features_to_scale)
-        
         scaled_df = pd.DataFrame(scaled_features, columns=features_to_scale.columns)
         
         if self.target_columns != '':
@@ -106,10 +107,9 @@ class Preprocess(DataScience):
         
         self.dataframe = scaled_df
         
-        return self.dataframe
+        return scaler
 
-
-    def data_normalization(self) -> DataFrame:
+    def data_normalization(self) -> MinMaxScaler:
         df = self.dataframe.copy()
         if self.target_columns != '':
             features_to_scale = df.drop(columns=self.target_columns)
@@ -117,9 +117,7 @@ class Preprocess(DataScience):
             features_to_scale = df
         
         scaler = MinMaxScaler()
-        
         scaled_features = scaler.fit_transform(features_to_scale)
-        
         scaled_df = pd.DataFrame(scaled_features, columns=features_to_scale.columns)
         
         if self.target_columns != '':
@@ -127,7 +125,7 @@ class Preprocess(DataScience):
         
         self.dataframe = scaled_df
         
-        return self.dataframe
+        return scaler
 
 
     def data_null_check(self) -> Dict[str, int]:

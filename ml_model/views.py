@@ -196,12 +196,14 @@ def model_do_predict(request):
     modelfile = get_model(model_name, dataset, workspace, username)
     print("modelfile",modelfile.name)
     print("masuk")
-    scaler = joblib.load(modelfile.scaler.file)
-    print("scaled", scaler.transform(y_test))
+    print("print",modelfile.scaler)
+    if modelfile.scaler:
+        scaler = joblib.load(modelfile.scaler.file)
+        print("scaled", scaler.transform(y_test))
     model = joblib.load(modelfile.model_file.file)
     predict = model.predict(y_test)
 
-    return Response({'result': predict[0][0]}, status=status.HTTP_200_OK)
+    return Response({'result': predict}, status=status.HTTP_200_OK)
 
 def infer_dtype(value):
     try:
